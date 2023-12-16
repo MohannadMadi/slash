@@ -14,16 +14,17 @@ class _CustomProductWrapperState extends State<CustomProductWrapper> {
   @override
   Widget build(BuildContext context) {
     //!card
-    return Container(
+    return SizedBox(
       width: widget.size,
       height: widget.size,
-      decoration: BoxDecoration(
+      child: Card(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(widget.size / 8),
+        child: widget.imageUrl.contains("http")
+            ? Image(image: NetworkImage(widget.imageUrl))
+            : Image(
+                image: AssetImage(widget.imageUrl),
+              ),
       ),
-      child: widget.imageUrl.contains("http")
-          ? Image(image: AssetImage(widget.imageUrl))
-          : Image(image: AssetImage(widget.imageUrl)),
     );
   }
 }

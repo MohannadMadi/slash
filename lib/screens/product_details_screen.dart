@@ -19,14 +19,20 @@ class ProductScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductScreen> {
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(title: const Text("Product details")),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
         children: [
           const Row(),
           // CustomProductWrapper(product: widget.product, size: 300)
-          CustomScrollAnimation(product: widget.product)
+          SizedBox(
+              width: screenWidth,
+              height: screenHeight,
+              child: CustomScrollAnimation(product: widget.product))
         ],
       ),
     );
