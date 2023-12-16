@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:slash/screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,9 +16,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark(),
-      home: Scaffold(
-        body: Column(),
+      theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: const Color(0x00000000),
+          appBarTheme: const AppBarTheme(backgroundColor: Color(0x00000000))),
+      home: const Scaffold(
+        body: HomeScreen(),
       ),
     );
   }
