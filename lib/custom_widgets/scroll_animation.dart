@@ -2,12 +2,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:slash/custom_widgets/product_wrapper.dart';
 import 'package:slash/model/product.dart';
+import 'package:slash/model/product_list.dart';
 
 class CustomScrollAnimation extends StatefulWidget {
-  final Product product;
-  const CustomScrollAnimation({super.key, required this.product});
+  final int productIndex;
+  const CustomScrollAnimation({super.key, required this.productIndex});
 
   @override
   State<CustomScrollAnimation> createState() => _CustomScrollAnimationState();
@@ -41,9 +43,12 @@ class _CustomScrollAnimationState extends State<CustomScrollAnimation> {
               aspectRatio: 1 / 1,
               enableInfiniteScroll: false),
           carouselController: buttonCarouselController,
-          itemCount: widget.product.variations
+          itemCount: context
+              .watch<ListOfProducts>()
+              .products![widget.productIndex]
+              .variations!
               .elementAt(0)
-              .productVarientImages
+              .productVarientImages!
               .length,
           itemBuilder: (context, index, realIndex) => Column(
             children: [
@@ -55,65 +60,88 @@ class _CustomScrollAnimationState extends State<CustomScrollAnimation> {
                 turns: index * .06 - angle * .06,
                 duration: Duration.zero,
                 child: CustomProductWrapper(
-                    imageUrl: widget.product.variations
+                    imageUrl: context
+                        .watch<ListOfProducts>()
+                        .products![widget.productIndex]
+                        .variations!
                         .elementAt(0)
-                        .productVarientImages[index],
+                        .productVarientImages![index],
                     size: screenWidth * .75),
               ),
             ],
           ),
         ),
+
+        // image selector
         SizedBox(
           width: screenWidth,
-          height: screenHeight / 15,
+          height: screenWidth / 8,
           child: Center(
-            child: CarouselSlider.builder(
-                itemCount: widget.product.variations
-                    .elementAt(0)
-                    .productVarientImages
-                    .length,
-                itemBuilder: (context, index, realIndex) => InkWell(
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () {
-                      setState(() {
-                        print(selectedIndex);
-                      });
-                      buttonCarouselController.animateToPage(index,
-                          duration: Duration(milliseconds: 300));
-                    },
-                    child: Container(
-                        width: 20,
-                        height: 20,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 1.5,
-                                color: selectedIndex == index
-                                    ? Colors.green.shade200
-                                    : Colors.transparent)),
-                        child: widget.product.variations
-                                .elementAt(0)
-                                .productVarientImages[index]
-                                .contains("http")
-                            ? Image(
-                                fit: BoxFit.contain,
-                                image: NetworkImage(widget.product.variations
-                                    .elementAt(0)
-                                    .productVarientImages[index]))
-                            : Image(
-                                fit: BoxFit.scaleDown,
-                                image: AssetImage(widget.product.variations
-                                    .elementAt(0)
-                                    .productVarientImages[index]),
-                              ))),
-                options: CarouselOptions(enableInfiniteScroll: false)),
+            child: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemCount: context
+                  .watch<ListOfProducts>()
+                  .products![widget.productIndex]
+                  .variations!
+                  .elementAt(0)
+                  .productVarientImages!
+                  .length,
+              itemBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: InkWell(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () {
+                        setState(() {
+                          print(selectedIndex);
+                        });
+                        buttonCarouselController.animateToPage(index,
+                            duration: Duration(milliseconds: 300));
+                      },
+                      child: Container(
+                          width: screenWidth / 8 - screenWidth / 90,
+                          height: screenWidth / 8,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.circular(screenWidth / 100),
+                              border: Border.all(
+                                  width: 1.5,
+                                  color: selectedIndex == index
+                                      ? Colors.green.shade200
+                                      : Colors.transparent)),
+                          child: context
+                                  .watch<ListOfProducts>()
+                                  .products![widget.productIndex]
+                                  .variations!
+                                  .elementAt(0)
+                                  .productVarientImages![index]
+                                  .contains("http")
+                              ? Image(
+                                  fit: BoxFit.contain,
+                                  image: NetworkImage(context
+                                      .watch<ListOfProducts>()
+                                      .products![widget.productIndex]
+                                      .variations!
+                                      .elementAt(0)
+                                      .productVarientImages![index]))
+                              : Image(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage(context
+                                      .watch<ListOfProducts>()
+                                      .products![widget.productIndex]
+                                      .variations!
+                                      .elementAt(0)
+                                      .productVarientImages![index]),
+                                )))),
+            ),
           ),
         ),
-        Container(
-          color: Colors.amber,
-          width: 10,
-          height: 1000,
-        )
+        // Text(
+        //   context.watch<Product>().id.toString(),
+        //   style: TextStyle(color: Colors.white),
+        // )
       ],
     );
   }
