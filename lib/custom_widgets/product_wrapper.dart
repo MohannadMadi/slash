@@ -13,15 +13,15 @@ class CustomProductWrapper extends StatefulWidget {
 class _CustomProductWrapperState extends State<CustomProductWrapper> {
   @override
   Widget build(BuildContext context) {
-    //!card
     return SizedBox(
       width: widget.size,
       height: widget.size,
       child: Card(
         color: Colors.white,
         child: widget.imageUrl.contains("http")
-            ? Image(image: NetworkImage(widget.imageUrl))
+            ? Image(fit: BoxFit.contain, image: NetworkImage(widget.imageUrl))
             : Image(
+                fit: BoxFit.scaleDown,
                 image: AssetImage(widget.imageUrl),
               ),
       ),

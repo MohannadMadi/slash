@@ -24,15 +24,12 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text("Product details")),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
         children: [
           const Row(),
           // CustomProductWrapper(product: widget.product, size: 300)
-          SizedBox(
-              width: screenWidth,
-              height: screenHeight,
-              child: CustomScrollAnimation(product: widget.product))
+          CustomScrollAnimation(product: widget.product),
         ],
       ),
     );
