@@ -2,6 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:slash/custom_widgets/add_to_cart.dart';
+import 'package:slash/custom_widgets/description.dart';
+import 'package:slash/custom_widgets/material_selector.dart';
+import 'package:slash/custom_widgets/quantity_widget.dart';
 
 import 'package:slash/custom_widgets/scroll_animation.dart';
 import 'package:slash/custom_widgets/select_color.dart';
@@ -77,7 +81,15 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
               ],
             ),
             CustomColorSelector(productIndex: widget.productIndex),
-            CustomSizeSelector(productIndex: widget.productIndex)
+            CustomSizeSelector(productIndex: widget.productIndex),
+            CustomMaterialSelector(productIndex: widget.productIndex),
+            CutomDescriptionDisply(
+              productIndex: widget.productIndex,
+            ),
+            CustomQuantityWidget(productIndex: widget.productIndex),
+            CustomAddTocartButton(
+              productIndex: widget.productIndex,
+            )
           ],
         ),
       ),

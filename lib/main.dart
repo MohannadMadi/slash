@@ -70,7 +70,9 @@ ProductVariation variation2 = ProductVariation(
       proAndVal2,
       proAndVal3,
       proAndVal4,
-      proAndVal5
+      proAndVal5,
+      proAndVal6,
+      proAndVal7,
     ]);
 
 ProductPropertyAndValue proAndVal2 =
@@ -81,6 +83,10 @@ ProductPropertyAndValue proAndVal4 =
     ProductPropertyAndValue(property: "Size", value: "XXL");
 ProductPropertyAndValue proAndVal5 =
     ProductPropertyAndValue(property: "Size", value: "XL");
+ProductPropertyAndValue proAndVal6 =
+    ProductPropertyAndValue(property: "Material", value: "Cotton");
+ProductPropertyAndValue proAndVal7 =
+    ProductPropertyAndValue(property: "Material", value: "Wool");
 
 List<Product> products = [product1, product2];
 
