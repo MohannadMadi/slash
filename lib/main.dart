@@ -39,7 +39,7 @@ ProductVariation variation1 = ProductVariation(
     productPropertiesValues: [proAndVal1]);
 
 ProductPropertyAndValue proAndVal1 =
-    ProductPropertyAndValue(property: "Color", value: "0xffffff");
+    ProductPropertyAndValue(property: "Size", value: "M");
 
 Product product2 = Product(
     id: 2,
@@ -49,9 +49,7 @@ Product product2 = Product(
     brandLogoUrl: "Assets/Images/profilePic.jpeg",
     brandId: 1,
     rating: 4,
-    variations: [
-      variation2,
-    ],
+    variations: [variation2, variation1],
     availableProperties: variation2.productPropertiesValues);
 
 ProductVariation variation2 = ProductVariation(
@@ -62,9 +60,7 @@ ProductVariation variation2 = ProductVariation(
     inStock: true,
     productVarientImages: [
       "Assets/Images/bag.jpg",
-      "Assets/Images/ipad.jpg",
-      "Assets/Images/ipad.jpg",
-      "Assets/Images/ipad.jpg"
+      "Assets/Images/gettyimages-167759603-612x612.jpg"
     ],
     productPropertiesValues: [
       proAndVal2,
@@ -93,6 +89,8 @@ List<Product> products = [product1, product2];
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return MaterialApp(
       theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: const Color(0x00000000),
@@ -101,11 +99,20 @@ class _MyAppState extends State<MyApp> {
         body: Column(
           children: [
             context.watch<ListOfProducts>().products == null
-                ? FloatingActionButton(onPressed: () {
-                    setState(() {
-                      context.read<ListOfProducts>().products = products;
-                    });
-                  })
+                ? Center(
+                    child: Container(
+                      height: screenHeight,
+                      child: IconButton(
+                          iconSize: 100,
+                          icon: Icon(Icons.home),
+                          onPressed: () {
+                            setState(() {
+                              context.read<ListOfProducts>().products =
+                                  products;
+                            });
+                          }),
+                    ),
+                  )
                 : HomeScreen(),
           ],
         ),
