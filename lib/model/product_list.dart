@@ -12,7 +12,9 @@ class ListOfProducts extends ChangeNotifier {
   Map<int, String>? variationIdOfUniqueSize;
   Map<int, String>? variationIdOfUniqueMaterial;
 
-  late int selectedColorIndex;
+  int selectedColorIndex;
+  int selectedSizeIndex;
+  int selectedMaterialIndex;
 
   ListOfProducts({
     this.products,
@@ -23,6 +25,8 @@ class ListOfProducts extends ChangeNotifier {
     this.variationIdOfUniqueSize,
     this.variationIdOfUniqueMaterial,
     this.selectedColorIndex = 0,
+    this.selectedSizeIndex = 0,
+    this.selectedMaterialIndex = 0,
   });
 
   get getProducts => products;
@@ -135,11 +139,21 @@ class ListOfProducts extends ChangeNotifier {
 
   List listOfSelectedMaterialIDs(String selectedMaterial) {
     List<int> keys = [];
-    variationIdOfUniqueColor!.forEach((key, value) {
+    variationIdOfUniqueMaterial!.forEach((key, value) {
       if (value == selectedMaterial) {
         keys.add(key);
       }
     });
     return keys;
+  }
+
+//finding intersectionof 2 lists
+  List<int> findIntersection<int>(List<int> list1, List<int> list2) {
+    Set<int> set1 = Set<int>.from(list1);
+    Set<int> set2 = Set<int>.from(list2);
+
+    Set<int> intersection = set1.intersection(set2);
+
+    return intersection.toList();
   }
 }

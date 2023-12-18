@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:slash/model/product_property_and_value.dart';
 import 'package:slash/model/product_variation.dart';
-import 'package:slash/screens/home_screen.dart';
 
 class Product extends ChangeNotifier {
   int? id;
