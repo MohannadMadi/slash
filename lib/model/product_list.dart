@@ -6,10 +6,12 @@ import 'package:slash/model/product.dart';
 class ListOfProducts extends ChangeNotifier {
   List<Product>? products;
   List<String>? uniqueColors;
+  late int selectedColorIndex;
 
   ListOfProducts({
     this.products,
     this.uniqueColors,
+    this.selectedColorIndex = 0,
   });
 
   get getProducts => products;

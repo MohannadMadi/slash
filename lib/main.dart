@@ -68,9 +68,9 @@ ProductVariation variation2 = ProductVariation(
     ]);
 
 ProductPropertyAndValue proAndVal1 =
-    ProductPropertyAndValue(property: "Color", value: "0x0fffffff");
+    ProductPropertyAndValue(property: "Color", value: "0xffffffff");
 ProductPropertyAndValue proAndVal2 =
-    ProductPropertyAndValue(property: "Color", value: "0x0fffff00");
+    ProductPropertyAndValue(property: "Color", value: "0xff000000");
 ProductPropertyAndValue proAndVal3 =
     ProductPropertyAndValue(property: "Size", value: "M");
 

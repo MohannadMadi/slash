@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:slash/model/product_list.dart';
 
@@ -19,64 +20,50 @@ List<String> colorsInSellerApp = [
   "0x0fffffff",
   "0xff0000ff"
 ];
+Color getColorFromHex(String hexColor) {
+  final int hexValue = int.parse(hexColor.substring(2), radix: 16);
+  return Color(hexValue | 0xFF000000);
+}
 
 class _CustomColorSelectorState extends State<CustomColorSelector> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-
     return SizedBox(
-      width: screenWidth,
-      height: screenHeight / 10,
-      child: Center(
-        child: ListView.builder(
+        width: screenWidth,
+        height: 30,
+        child: Center(
+          child: ListView.builder(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemCount: context.watch<ListOfProducts>().uniqueColors != null
-                ? context.watch<ListOfProducts>().uniqueColors!.length
-                : 0,
-            itemBuilder: (context, index) =>
-                //
-                SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: Radio(
-                    autofocus: true,
-                    overlayColor: MaterialStatePropertyAll(
-                      Color(Color(context
-                              .watch<ListOfProducts>()
-                              .uniqueColors![index]
-                              .hashCode)
-                          .hashCode),
-                    ),
-                    fillColor: MaterialStatePropertyAll(Color(context
-                        .watch<ListOfProducts>()
-                        .uniqueColors![index]
-                        .hashCode)),
-                    value: index,
-                    groupValue: groupValue,
-                    onChanged: (value) {
-                      setState(() {
-                        groupValue = value!;
-                        // context
-                        //         .read<ListOfProducts>()
-                        //         .products![widget.productIndex]
-                        //         .currentVariationId =
-                        //     context
-                        //         .read<ListOfProducts>()
-                        //         .products![widget.productIndex]
-                        //         .variations![index]
-                        //         .id;
-
-                        print(context
-                            .read<ListOfProducts>()
-                            .uniqueColors![index]);
-                      });
-                    },
-                  ),
-                )),
-      ),
-    );
+            itemCount: context.watch<ListOfProducts>().uniqueColors!.length,
+            itemBuilder: (context, index) => InkWell(
+              onTap: () {
+                setState(() {
+                  context.read<ListOfProducts>().selectedColorIndex = index;
+                });
+              },
+              child: Container(
+                width: 30,
+                decoration:
+                    context.watch<ListOfProducts>().selectedColorIndex == index
+                        ? BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(width: 1.5, color: Colors.white))
+                        : BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            boxShadow: const [
+                                BoxShadow(color: Colors.white, blurRadius: 10)
+                              ]),
+                padding: const EdgeInsets.all(2),
+                child: CircleAvatar(
+                  backgroundColor: getColorFromHex(
+                      context.watch<ListOfProducts>().uniqueColors![index]),
+                ),
+              ),
+            ),
+          ),
+        ));
   }
 }
