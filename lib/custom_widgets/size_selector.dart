@@ -6,7 +6,10 @@ import 'package:slash/model/product_list.dart';
 
 class CustomSizeSelector extends StatefulWidget {
   final int productIndex;
-  const CustomSizeSelector({super.key, required this.productIndex});
+  final Function onchanged;
+
+  const CustomSizeSelector(
+      {super.key, required this.productIndex, required this.onchanged});
 
   @override
   State<CustomSizeSelector> createState() => _CustomSizeSelectorState();
@@ -14,7 +17,8 @@ class CustomSizeSelector extends StatefulWidget {
 
 int selectedIndex = 0;
 
-class _CustomSizeSelectorState extends State<CustomSizeSelector> {
+class _CustomSizeSelectorState extends State<CustomSizeSelector>
+    with ChangeNotifier {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -49,7 +53,7 @@ class _CustomSizeSelectorState extends State<CustomSizeSelector> {
                       context.watch<ListOfProducts>().uniqueSizes!.length,
                   itemBuilder: (context, index) {
                     return
-// if the intersection of the color id's and the size id's !=0 it should work fine :)
+// if the intersection of the color id's and the size[index] id's > 0 it should work fine :)
                         context
                                 .watch<ListOfProducts>()
                                 .findIntersection(
@@ -76,6 +80,7 @@ class _CustomSizeSelectorState extends State<CustomSizeSelector> {
                                         .read<ListOfProducts>()
                                         .selectedSizeIndex = index;
                                   });
+                                  widget.onchanged();
                                 },
                                 child: Padding(
                                   padding:

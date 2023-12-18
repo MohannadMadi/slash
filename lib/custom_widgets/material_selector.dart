@@ -4,7 +4,10 @@ import 'package:slash/model/product_list.dart';
 
 class CustomMaterialSelector extends StatefulWidget {
   final int productIndex;
-  const CustomMaterialSelector({super.key, required this.productIndex});
+  final Function onchanged;
+
+  const CustomMaterialSelector(
+      {super.key, required this.productIndex, required this.onchanged});
 
   @override
   State<CustomMaterialSelector> createState() => _CustomMaterialSelectorState();
@@ -39,7 +42,7 @@ class _CustomMaterialSelectorState extends State<CustomMaterialSelector> {
                     context.watch<ListOfProducts>().uniqueMaterials!.length,
                 itemBuilder: (context, index) {
                   return
-                      //condition to find intersection between the three variation id's , if intersection with the selected material index >0 then we're fine:)
+                      //condition to find intersection between the three variation id's , if intersection with the material[index]  >0 then we're fine:)
                       context
                               .watch<ListOfProducts>()
                               .findIntersection(
@@ -80,6 +83,7 @@ class _CustomMaterialSelectorState extends State<CustomMaterialSelector> {
                                   context
                                       .read<ListOfProducts>()
                                       .selectedMaterialIndex = index;
+                                  widget.onchanged();
                                 });
                               },
                               child: Padding(

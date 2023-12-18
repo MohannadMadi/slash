@@ -5,7 +5,9 @@ import 'package:slash/model/product_list.dart';
 
 class CustomColorSelector extends StatefulWidget {
   final int productIndex;
-  const CustomColorSelector({super.key, required this.productIndex});
+  final Function onchanged;
+  const CustomColorSelector(
+      {super.key, required this.productIndex, required this.onchanged});
 
   @override
   State<CustomColorSelector> createState() => _CustomColorSelectorState();
@@ -43,6 +45,7 @@ class _CustomColorSelectorState extends State<CustomColorSelector> {
                 setState(() {
                   context.read<ListOfProducts>().selectedColorIndex = index;
                 });
+                widget.onchanged();
               },
               child: Container(
                 width: 30,

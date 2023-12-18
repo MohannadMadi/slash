@@ -80,9 +80,23 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
                 )
               ],
             ),
-            CustomColorSelector(productIndex: widget.productIndex),
-            CustomSizeSelector(productIndex: widget.productIndex),
-            CustomMaterialSelector(productIndex: widget.productIndex),
+            CustomColorSelector(
+              productIndex: widget.productIndex,
+              onchanged: () {
+                setState(() {});
+              },
+            ),
+            CustomSizeSelector(
+              productIndex: widget.productIndex,
+              onchanged: () {
+                setState(() {});
+              },
+            ),
+            CustomMaterialSelector(
+                productIndex: widget.productIndex,
+                onchanged: () {
+                  setState(() {});
+                }),
             CutomDescriptionDisply(
               productIndex: widget.productIndex,
             ),
