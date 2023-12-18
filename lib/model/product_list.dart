@@ -6,17 +6,22 @@ import 'package:slash/model/product.dart';
 class ListOfProducts extends ChangeNotifier {
   List<Product>? products;
   List<String>? uniqueColors;
-  Map<int, String>? variationIdOfUniqueColor;
   List<String>? uniqueSizes;
   List<String>? uniqueMaterials;
+  Map<int, String>? variationIdOfUniqueColor;
+  Map<int, String>? variationIdOfUniqueSize;
+  Map<int, String>? variationIdOfUniqueMaterial;
+
   late int selectedColorIndex;
 
   ListOfProducts({
     this.products,
     this.uniqueColors,
-    this.variationIdOfUniqueColor,
     this.uniqueSizes,
     this.uniqueMaterials,
+    this.variationIdOfUniqueColor,
+    this.variationIdOfUniqueSize,
+    this.variationIdOfUniqueMaterial,
     this.selectedColorIndex = 0,
   });
 
@@ -27,6 +32,8 @@ class ListOfProducts extends ChangeNotifier {
     addUniqueSize(product);
     addUniqueMaterial(product);
     addUniqeColorID(product);
+    addUniqeSizeID(product);
+    addUniqeMaterialID(product);
     notifyListeners();
   }
 
@@ -80,5 +87,59 @@ class ListOfProducts extends ChangeNotifier {
               .value
           : null;
     }
+  }
+
+  void addUniqeSizeID(Product product) {
+    for (var i = 0; i < product.variations!.length; i++) {
+      product.variations![i].productPropertiesValues!
+              .any((element) => element.property == "Size")
+          ? variationIdOfUniqueSize![product.variations![i].id!] = product
+              .variations![i].productPropertiesValues!
+              .firstWhere((element) => element.property == "Size")
+              .value
+          : null;
+    }
+  }
+
+  void addUniqeMaterialID(Product product) {
+    for (var i = 0; i < product.variations!.length; i++) {
+      product.variations![i].productPropertiesValues!
+              .any((element) => element.property == "Material")
+          ? variationIdOfUniqueMaterial![product.variations![i].id!] = product
+              .variations![i].productPropertiesValues!
+              .firstWhere((element) => element.property == "Material")
+              .value
+          : null;
+    }
+  }
+
+  List listOfSelectedColorIDs(String selectedColor) {
+    List<int> keys = [];
+    variationIdOfUniqueColor!.forEach((key, value) {
+      if (value == selectedColor) {
+        keys.add(key);
+      }
+    });
+    return keys;
+  }
+
+  List listOfSelectedSizeIDs(String selectedSize) {
+    List<int> keys = [];
+    variationIdOfUniqueSize!.forEach((key, value) {
+      if (value == selectedSize) {
+        keys.add(key);
+      }
+    });
+    return keys;
+  }
+
+  List listOfSelectedMaterialIDs(String selectedMaterial) {
+    List<int> keys = [];
+    variationIdOfUniqueColor!.forEach((key, value) {
+      if (value == selectedMaterial) {
+        keys.add(key);
+      }
+    });
+    return keys;
   }
 }

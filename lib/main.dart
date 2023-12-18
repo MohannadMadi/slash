@@ -68,9 +68,9 @@ ProductVariation variation2 = ProductVariation(
     ]);
 
 ProductPropertyAndValue proAndVal1 =
-    ProductPropertyAndValue(property: "Color", value: "0xffffff00");
-ProductPropertyAndValue proAndVal2 =
     ProductPropertyAndValue(property: "Color", value: "0xffffffff");
+ProductPropertyAndValue proAndVal2 =
+    ProductPropertyAndValue(property: "Color", value: "0xffffff00");
 ProductPropertyAndValue proAndVal3 =
     ProductPropertyAndValue(property: "Size", value: "M");
 
@@ -101,6 +101,8 @@ class _MyAppState extends State<MyApp> {
     context.read<ListOfProducts>().uniqueMaterials = [];
     context.read<ListOfProducts>().uniqueSizes = [];
     context.read<ListOfProducts>().variationIdOfUniqueColor = {};
+    context.read<ListOfProducts>().variationIdOfUniqueSize = {};
+    context.read<ListOfProducts>().variationIdOfUniqueMaterial = {};
 
     super.initState();
   }
@@ -127,6 +129,9 @@ class _MyAppState extends State<MyApp> {
                 context.read<ListOfProducts>().addProduct(product1);
                 context.read<ListOfProducts>().addProduct(product2);
                 print(context.read<ListOfProducts>().variationIdOfUniqueColor);
+                print(context.read<ListOfProducts>().variationIdOfUniqueSize);
+                print(
+                    context.read<ListOfProducts>().variationIdOfUniqueMaterial);
               },
             )
           ],
