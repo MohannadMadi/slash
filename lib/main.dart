@@ -70,7 +70,7 @@ ProductVariation variation2 = ProductVariation(
 ProductPropertyAndValue proAndVal1 =
     ProductPropertyAndValue(property: "Color", value: "0x0fffffff");
 ProductPropertyAndValue proAndVal2 =
-    ProductPropertyAndValue(property: "Color", value: "0x0fffffff");
+    ProductPropertyAndValue(property: "Color", value: "0x0fffff00");
 ProductPropertyAndValue proAndVal3 =
     ProductPropertyAndValue(property: "Size", value: "M");
 
@@ -95,6 +95,19 @@ List<Product> products = [product1, product2];
 
 class _MyAppState extends State<MyApp> {
   @override
+  void initState() {
+    context.read<ListOfProducts>().products = [];
+    context.read<ListOfProducts>().uniqueColors = [];
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
 
@@ -105,22 +118,13 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         body: Column(
           children: [
-            context.watch<ListOfProducts>().products == null
-                ? Center(
-                    child: Container(
-                      height: screenHeight,
-                      child: IconButton(
-                          iconSize: 100,
-                          icon: Icon(Icons.home),
-                          onPressed: () {
-                            setState(() {
-                              context.read<ListOfProducts>().products =
-                                  products;
-                            });
-                          }),
-                    ),
-                  )
-                : HomeScreen(),
+            HomeScreen(),
+            FloatingActionButton(
+              onPressed: () {
+                context.read<ListOfProducts>().addProduct(product1);
+                context.read<ListOfProducts>().addProduct(product2);
+              },
+            )
           ],
         ),
       ),

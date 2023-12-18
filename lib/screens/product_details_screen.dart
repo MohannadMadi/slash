@@ -89,7 +89,10 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
             CustomQuantityWidget(productIndex: widget.productIndex),
             CustomAddTocartButton(
               productIndex: widget.productIndex,
-            )
+            ),
+            FloatingActionButton(onPressed: () {
+              print(context.read<ListOfProducts>().uniqueColors!.length);
+            })
           ],
         ),
       ),

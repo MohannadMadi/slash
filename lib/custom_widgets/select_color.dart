@@ -33,44 +33,49 @@ class _CustomColorSelectorState extends State<CustomColorSelector> {
         child: ListView.builder(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemCount: context.watch<ListOfProducts>().uniqueColors!.length,
+            itemCount: context.watch<ListOfProducts>().uniqueColors != null
+                ? context.watch<ListOfProducts>().uniqueColors!.length
+                : 0,
             itemBuilder: (context, index) =>
                 //
-                context.watch<ListOfProducts>().uniqueColors != null
-                    ? SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: Radio(
-                          autofocus: true,
-                          overlayColor: MaterialStatePropertyAll(
-                            Color(Color(colorsInSellerApp[index].hashCode)
-                                .hashCode),
-                          ),
-                          fillColor: MaterialStatePropertyAll(Color(context
+                SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: Radio(
+                    autofocus: true,
+                    overlayColor: MaterialStatePropertyAll(
+                      Color(Color(context
                               .watch<ListOfProducts>()
                               .uniqueColors![index]
-                              .hashCode)),
-                          value: index,
-                          groupValue: groupValue,
-                          onChanged: (value) {
-                            setState(() {
-                              groupValue = value!;
-                              // context
-                              //         .read<ListOfProducts>()
-                              //         .products![widget.productIndex]
-                              //         .currentVariationId =
-                              //     context
-                              //         .read<ListOfProducts>()
-                              //         .products![widget.productIndex]
-                              //         .variations![index]
-                              //         .id;
-                            });
-                            print(
-                                context.watch<ListOfProducts>().uniqueColors!);
-                          },
-                        ),
-                      )
-                    : SizedBox()),
+                              .hashCode)
+                          .hashCode),
+                    ),
+                    fillColor: MaterialStatePropertyAll(Color(context
+                        .watch<ListOfProducts>()
+                        .uniqueColors![index]
+                        .hashCode)),
+                    value: index,
+                    groupValue: groupValue,
+                    onChanged: (value) {
+                      setState(() {
+                        groupValue = value!;
+                        // context
+                        //         .read<ListOfProducts>()
+                        //         .products![widget.productIndex]
+                        //         .currentVariationId =
+                        //     context
+                        //         .read<ListOfProducts>()
+                        //         .products![widget.productIndex]
+                        //         .variations![index]
+                        //         .id;
+
+                        print(context
+                            .read<ListOfProducts>()
+                            .uniqueColors![index]);
+                      });
+                    },
+                  ),
+                )),
       ),
     );
   }
