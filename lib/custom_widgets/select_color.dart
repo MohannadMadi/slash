@@ -28,15 +28,15 @@ class _CustomColorSelectorState extends State<CustomColorSelector> {
             itemCount: context
                 .watch<ListOfProducts>()
                 .products![widget.productIndex]
-                .availableProperties!
+                .variations!
                 .length,
             itemBuilder: (context, index) => context
-                        .watch<ListOfProducts>()
-                        .products![widget.productIndex]
-                        .availableProperties![index]
-                        .property ==
-                    "Color"
-                ? Container(
+                    .watch<ListOfProducts>()
+                    .products![widget.productIndex]
+                    .variations![index]
+                    .productPropertiesValues!
+                    .any((element) => element.property == "Color")
+                ? SizedBox(
                     width: 20,
                     height: 20,
                     child: Radio(
@@ -45,7 +45,10 @@ class _CustomColorSelectorState extends State<CustomColorSelector> {
                         Color(context
                             .watch<ListOfProducts>()
                             .products![widget.productIndex]
-                            .availableProperties![index]
+                            .variations![index]
+                            .productPropertiesValues!
+                            .firstWhere(
+                                (element) => element.property == "Color")
                             .value
                             .hashCode),
                       ),
@@ -53,7 +56,10 @@ class _CustomColorSelectorState extends State<CustomColorSelector> {
                         Color(context
                             .watch<ListOfProducts>()
                             .products![widget.productIndex]
-                            .availableProperties![index]
+                            .variations![index]
+                            .productPropertiesValues!
+                            .firstWhere(
+                                (element) => element.property == "Color")
                             .value
                             .hashCode),
                       ),
@@ -62,7 +68,20 @@ class _CustomColorSelectorState extends State<CustomColorSelector> {
                       onChanged: (value) {
                         setState(() {
                           groupValue = value!;
+                          context
+                                  .read<ListOfProducts>()
+                                  .products![widget.productIndex]
+                                  .currentVariationId =
+                              context
+                                  .read<ListOfProducts>()
+                                  .products![widget.productIndex]
+                                  .variations![index]
+                                  .id;
                         });
+                        print(context
+                            .read<ListOfProducts>()
+                            .products![widget.productIndex]
+                            .currentVariationId);
                       },
                     ),
                   )

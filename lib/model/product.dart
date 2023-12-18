@@ -6,6 +6,7 @@ import 'package:slash/screens/home_screen.dart';
 
 class Product extends ChangeNotifier {
   int? id;
+  int? currentVariationId; // to toggle between variations
   String? name;
   String? description;
   int? brandId;
@@ -18,6 +19,7 @@ class Product extends ChangeNotifier {
 
   Product({
     this.id,
+    this.currentVariationId,
     this.name,
     this.description,
     this.brandId,

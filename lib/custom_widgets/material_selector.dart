@@ -19,10 +19,10 @@ class _CustomMaterialSelectorState extends State<CustomMaterialSelector> {
     double screenWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
+            Text(
               "Select Material",
               style: TextStyle(fontSize: 20),
             ),
