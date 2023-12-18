@@ -49,7 +49,7 @@ ProductVariation variation1 = ProductVariation(
     quantity: 20,
     inStock: true,
     productVarientImages: ["Assets/Images/hmgoepprod.jpeg"],
-    productPropertiesValues: [proAndVal1, proAndVal4, proAndVal6]);
+    productPropertiesValues: [proAndVal1, proAndVal3, proAndVal7]);
 
 ProductVariation variation2 = ProductVariation(
     id: 200,
@@ -63,14 +63,14 @@ ProductVariation variation2 = ProductVariation(
     ],
     productPropertiesValues: [
       proAndVal2,
-      proAndVal3,
+      proAndVal4,
       proAndVal6
     ]);
 
 ProductPropertyAndValue proAndVal1 =
-    ProductPropertyAndValue(property: "Color", value: "0xffffffff");
+    ProductPropertyAndValue(property: "Color", value: "0xffffff00");
 ProductPropertyAndValue proAndVal2 =
-    ProductPropertyAndValue(property: "Color", value: "0xff000000");
+    ProductPropertyAndValue(property: "Color", value: "0xffffffff");
 ProductPropertyAndValue proAndVal3 =
     ProductPropertyAndValue(property: "Size", value: "M");
 
@@ -98,6 +98,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     context.read<ListOfProducts>().products = [];
     context.read<ListOfProducts>().uniqueColors = [];
+    context.read<ListOfProducts>().uniqueMaterials = [];
+    context.read<ListOfProducts>().uniqueSizes = [];
+    context.read<ListOfProducts>().variationIdOfUniqueColor = {};
 
     super.initState();
   }
@@ -123,6 +126,7 @@ class _MyAppState extends State<MyApp> {
               onPressed: () {
                 context.read<ListOfProducts>().addProduct(product1);
                 context.read<ListOfProducts>().addProduct(product2);
+                print(context.read<ListOfProducts>().variationIdOfUniqueColor);
               },
             )
           ],
