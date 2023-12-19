@@ -22,5 +22,9 @@ class ListOfProducts extends ChangeNotifier {
     product.addUniqeMaterialID();
   }
 
-// a list of unique colors to display in the product details screen
+  int getProductIndexFromProductId(int id) {
+    return products!.isNotEmpty
+        ? products!.indexOf(products!.firstWhere((element) => element.id == id))
+        : -1;
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:slash/model/cart_item.dart';
 import 'package:slash/model/product_list.dart';
 
 class CustomAddTocartButton extends StatefulWidget {
@@ -15,15 +16,18 @@ class _CustomAddTocartButtonState extends State<CustomAddTocartButton> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-
+    var watchProduct =
+        context.watch<ListOfProducts>().products![widget.productIndex];
+    var readProduct =
+        context.read<ListOfProducts>().products![widget.productIndex];
+    var watchCartItem = context.watch<CartItem>();
+    var readCartItem = context.read<CartItem>();
     return Center(
-      child: context
-              .watch<ListOfProducts>()
-              .products![widget.productIndex]
-              .variations![0]
-              .inStock!
+      child: watchProduct.getCurrentVariation().inStock!
           ? InkWell(
-              onTap: () {},
+              onTap: () {
+                readCartItem.addItemToCart(readProduct.getCurrentVariation());
+              },
               child: Container(
                 alignment: Alignment.center,
                 decoration: BoxDecoration(

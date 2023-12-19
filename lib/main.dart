@@ -7,6 +7,7 @@ import 'package:slash/model/product_list.dart';
 import 'package:slash/model/product_property_and_value.dart';
 import 'package:slash/model/product_variation.dart';
 import 'package:slash/screens/home_screen.dart';
+import 'package:slash/screens/my_cart.dart';
 
 void main() {
   runApp(MultiProvider(
@@ -72,7 +73,7 @@ ProductVariation variation2 = ProductVariation(
     productId: 2,
     price: 20,
     quantity: 2,
-    inStock: true,
+    inStock: false,
     productVarientImages: [
       "Assets/Images/bag.jpg",
       "Assets/Images/gettyimages-167759603-612x612.jpg"
@@ -92,7 +93,7 @@ ProductVariation variation3 = ProductVariation(
     "Assets/Images/bag.jpg",
     "Assets/Images/gettyimages-167759603-612x612.jpg"
   ],
-  productPropertiesValues: [proAndVal2, proAndVal7],
+  productPropertiesValues: [proAndVal2, proAndVal4],
 );
 
 ProductPropertyAndValue proAndVal1 =
@@ -125,23 +126,42 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     context.read<ListOfProducts>().products = [];
+    context.read<CartItem>().cartItems = [];
+
+    context.read<ListOfProducts>().addProduct(product1);
+    context.read<ListOfProducts>().addProduct(product2);
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    context.read<ListOfProducts>().addProduct(product1);
-    context.read<ListOfProducts>().addProduct(product2);
-
     return MaterialApp(
       theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: const Color(0x00000000),
           appBarTheme: const AppBarTheme(backgroundColor: Color(0x00000000))),
-      home: const Scaffold(
+      home: Scaffold(
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            HomeScreen(),
+            const HomeScreen(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Builder(
+                  builder: (BuildContext builderContext) => IconButton(
+                    color: Colors.white,
+                    onPressed: () {
+                      Navigator.of(builderContext).push(MaterialPageRoute(
+                        builder: (context) => const MyCart(),
+                      ));
+                    },
+                    icon: const Icon(Icons.shopping_cart_rounded),
+                  ),
+                )
+              ],
+            ),
           ],
         ),
       ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:slash/model/cart_item.dart';
 
 class CustomQuantityWidget extends StatefulWidget {
   final int productIndex;
@@ -8,13 +10,12 @@ class CustomQuantityWidget extends StatefulWidget {
   State<CustomQuantityWidget> createState() => _CustomQuantityWidgetState();
 }
 
-int itemCounter = 1;
-
 class _CustomQuantityWidgetState extends State<CustomQuantityWidget> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-
+    var watchCartItem = context.watch<CartItem>();
+    var readCartItem = context.read<CartItem>();
     return SizedBox(
         width: screenWidth,
         height: 30,
@@ -32,7 +33,9 @@ class _CustomQuantityWidgetState extends State<CustomQuantityWidget> {
                 InkWell(
                   onTap: () {
                     setState(() {
-                      itemCounter > 1 ? itemCounter-- : null;
+                      watchCartItem.quantity > 1
+                          ? readCartItem.quantity--
+                          : null;
                     });
                   },
                   child: Container(
@@ -56,7 +59,7 @@ class _CustomQuantityWidgetState extends State<CustomQuantityWidget> {
                     border: Border.all(width: 2, color: Colors.white),
                   ),
                   child: Text(
-                    "$itemCounter",
+                    "${watchCartItem.quantity}",
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
@@ -64,7 +67,7 @@ class _CustomQuantityWidgetState extends State<CustomQuantityWidget> {
                 InkWell(
                   onTap: () {
                     setState(() {
-                      itemCounter++;
+                      readCartItem.quantity++;
                     });
                   },
                   child: Container(

@@ -21,6 +21,10 @@ class _CustomScrollAnimationState extends State<CustomScrollAnimation> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+    var watchProduct =
+        context.watch<ListOfProducts>().products![widget.productIndex];
+    var readProduct =
+        context.read<ListOfProducts>().products![widget.productIndex];
     return Column(
       children: [
         CarouselSlider.builder(
@@ -40,12 +44,8 @@ class _CustomScrollAnimationState extends State<CustomScrollAnimation> {
               aspectRatio: 1 / 1,
               enableInfiniteScroll: false),
           carouselController: buttonCarouselController,
-          itemCount: context
-              .watch<ListOfProducts>()
-              .products![widget.productIndex]
-              .variations![0]
-              .productVarientImages!
-              .length,
+          itemCount:
+              watchProduct.getCurrentVariation().productVarientImages!.length,
           itemBuilder: (context, index, realIndex) => Column(
             children: [
               SizedBox(
@@ -56,11 +56,8 @@ class _CustomScrollAnimationState extends State<CustomScrollAnimation> {
                 turns: index * .06 - angle * .06,
                 duration: Duration.zero,
                 child: CustomProductWrapper(
-                    imageUrl: context
-                        .watch<ListOfProducts>()
-                        .products![widget.productIndex]
-                        .variations!
-                        .elementAt(0)
+                    imageUrl: watchProduct
+                        .getCurrentVariation()
                         .productVarientImages![index],
                     size: screenWidth * .75),
               ),
@@ -76,11 +73,8 @@ class _CustomScrollAnimationState extends State<CustomScrollAnimation> {
             child: ListView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
-              itemCount: context
-                  .watch<ListOfProducts>()
-                  .products![widget.productIndex]
-                  .variations!
-                  .elementAt(0)
+              itemCount: watchProduct
+                  .getCurrentVariation()
                   .productVarientImages!
                   .length,
               itemBuilder: (context, index) => Padding(
@@ -107,28 +101,19 @@ class _CustomScrollAnimationState extends State<CustomScrollAnimation> {
                                   color: selectedIndex == index
                                       ? Colors.green.shade200
                                       : Colors.transparent)),
-                          child: context
-                                  .watch<ListOfProducts>()
-                                  .products![widget.productIndex]
-                                  .variations!
-                                  .elementAt(0)
+                          child: watchProduct
+                                  .getCurrentVariation()
                                   .productVarientImages![index]
                                   .contains("http")
                               ? Image(
                                   fit: BoxFit.contain,
-                                  image: NetworkImage(context
-                                      .watch<ListOfProducts>()
-                                      .products![widget.productIndex]
-                                      .variations!
-                                      .elementAt(0)
+                                  image: NetworkImage(watchProduct
+                                      .getCurrentVariation()
                                       .productVarientImages![index]))
                               : Image(
                                   fit: BoxFit.cover,
-                                  image: AssetImage(context
-                                      .watch<ListOfProducts>()
-                                      .products![widget.productIndex]
-                                      .variations!
-                                      .elementAt(0)
+                                  image: AssetImage(watchProduct
+                                      .getCurrentVariation()
                                       .productVarientImages![index]),
                                 )))),
             ),

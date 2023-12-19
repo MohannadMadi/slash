@@ -49,6 +49,11 @@ class Product extends ChangeNotifier {
     this.selectedMaterialIndex = 0,
   });
 
+  ProductVariation getCurrentVariation() {
+    return variations!
+        .firstWhere((element) => element.id == currentVariationID());
+  }
+
   void addUniqueColors() {
     for (var i = 0; i < variations!.length; i++) {
       uniqueColors == null ? uniqueColors = [] : null;
@@ -156,7 +161,7 @@ class Product extends ChangeNotifier {
     }
   }
 
-  List listOfSelectedColorIDs(String selectedColor) {
+  List<int> listOfSelectedColorIDs(String selectedColor) {
     List<int> keys = [];
     variationIdOfUniqueColor!.forEach((key, value) {
       if (value == selectedColor) {
@@ -166,7 +171,7 @@ class Product extends ChangeNotifier {
     return keys;
   }
 
-  List listOfSelectedSizeIDs(String selectedSize) {
+  List<int> listOfSelectedSizeIDs(String selectedSize) {
     List<int> keys = [];
     variationIdOfUniqueSize!.forEach((key, value) {
       if (value == selectedSize) {
@@ -176,7 +181,7 @@ class Product extends ChangeNotifier {
     return keys;
   }
 
-  List listOfSelectedMaterialIDs(String selectedMaterial) {
+  List<int> listOfSelectedMaterialIDs(String selectedMaterial) {
     List<int> keys = [];
     variationIdOfUniqueMaterial!.forEach((key, value) {
       if (value == selectedMaterial) {
@@ -220,66 +225,87 @@ class Product extends ChangeNotifier {
     return intersection.toList();
   }
 
-//   int getVariationId() {
-
-//     if(){
-
-// return 0;
-//     }
-//     return 0;
-
-//     // findIntersection(
-//     //         listOfSelectedMaterialIDs(uniqueMaterials![selectedMaterialIndex]),
-//     //         findIntersection(
-//     //             listOfSelectedColorIDs(uniqueColors![selectedColorIndex]),
-//     //             listOfSelectedSizeIDs(uniqueSizes![selectedSizeIndex])))
-//     //     .first;
-//   }
-
-  List<String> currentVariationProperties() {
-    List<String> properties = [];
-    //if there is a color in uniqueColors list it adds color property to properties
-    if (uniqueColors != []) {
-      properties.add(uniqueColors![selectedColorIndex]);
-      // if the intersection of the selected color ID's variation contains a size property it adds size to the list
+//current variation id getter
+  int currentVariationID() {
+    List<int> idList = [];
+    //if there is a color
+    if (uniqueColors!.isNotEmpty) {
+      // if the selected color has a size
       if (findIntersection(
               listOfSelectedColorIDs(uniqueColors![selectedColorIndex]),
-              listOfSizeIDs()) !=
-          []) {
-        properties.add(uniqueSizes![selectedSizeIndex]);
-
-        //if there is an intersection between all properties, add material
+              listOfSizeIDs())
+          .isNotEmpty) {
+//add the intersection of lists to my id list
+        idList = findIntersection(
+            listOfSelectedColorIDs(uniqueColors![selectedColorIndex]),
+            listOfSelectedSizeIDs(uniqueSizes![selectedSizeIndex]));
+        //if selected size and color has a material
         if (findIntersection(
                 findIntersection(
                     listOfSelectedColorIDs(uniqueColors![selectedColorIndex]),
                     listOfSelectedSizeIDs(uniqueSizes![selectedSizeIndex])),
-                listOfSelectedMaterialIDs(
-                    uniqueMaterials![selectedMaterialIndex])) !=
-            []) {
-          properties.add(
-              listOfSelectedMaterialIDs(uniqueMaterials![selectedMaterialIndex])
-                  .first
-                  .toString());
+                listOfMaterialIDs())
+            .isNotEmpty) {
+          idList = findIntersection(
+              listOfSelectedMaterialIDs(
+                  uniqueMaterials![selectedMaterialIndex]),
+              findIntersection(
+                  listOfSelectedColorIDs(uniqueColors![selectedColorIndex]),
+                  listOfSelectedSizeIDs(uniqueSizes![selectedSizeIndex])));
         }
-        // els if the intersection of the selected color ID's variation does not contains a size property it checks if it has an intersection with the materials and adds it if found
-      } else if (findIntersection(
+      }
+      //if selected color has no size
+      else {
+        //if selected color has material but no size
+        if (findIntersection(
+                listOfSelectedColorIDs(uniqueColors![selectedColorIndex]),
+                listOfMaterialIDs())
+            .isNotEmpty) {
+          idList = findIntersection(
               listOfSelectedColorIDs(uniqueColors![selectedColorIndex]),
-              listOfMaterialIDs()) !=
-          []) {
-        properties.add("Material");
-      } //else if there was no color and there was size
-    } else if (uniqueSizes != []) {
-      properties.add("Size");
-      if (findIntersection(
-              listOfSelectedSizeIDs(uniqueSizes![selectedSizeIndex]),
-              listOfMaterialIDs()) !=
-          []) {
-        properties.add("Material");
-      } else if (uniqueMaterials != []) {
-        properties.add("material");
+              listOfSelectedMaterialIDs(
+                  uniqueMaterials![selectedMaterialIndex]));
+        } else {
+          //if selected color has no material and no size
+          idList = listOfSelectedColorIDs(uniqueColors![selectedColorIndex]);
+        }
       }
     }
-    return properties;
+
+    //if there is no color
+    else {
+      //if there is a size property and no color
+      if (uniqueSizes!.isNotEmpty) {
+        // if the size has a material
+        if (findIntersection(
+                listOfSelectedSizeIDs(uniqueSizes![selectedSizeIndex]),
+                listOfMaterialIDs())
+            .isNotEmpty) {
+          idList = findIntersection(
+              listOfSelectedSizeIDs(uniqueSizes![selectedSizeIndex]),
+              listOfSelectedMaterialIDs(
+                  uniqueMaterials![selectedMaterialIndex]));
+        } else {
+//if the size has no material
+          idList = listOfSelectedSizeIDs(uniqueSizes![selectedSizeIndex]);
+        }
+
+        //if there is no color and no size
+      } else {
+        //if there is no color and no size but there is a material
+
+        if (uniqueMaterials!.isNotEmpty) {
+          idList = listOfSelectedMaterialIDs(
+              uniqueMaterials![selectedMaterialIndex]);
+        }
+        //if there is no color and no size and no material
+
+        else {
+          idList.add(variations![0].id!);
+        }
+      }
+    }
+    return idList.first;
   }
 
   bool verifyMaterial(int index) {

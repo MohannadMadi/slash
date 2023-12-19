@@ -27,7 +27,7 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    var product =
+    var watchProduct =
         context.watch<ListOfProducts>().products![widget.productIndex];
     return Scaffold(
       appBar: AppBar(title: const Text("Product details")),
@@ -45,15 +45,14 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      product.name!,
+                      watchProduct.name!,
                       style:
                           //making the fontsize change according to both screen height and width :)
                           TextStyle(
                               fontSize: screenWidth * screenHeight / 10000),
                     ),
                     Text(
-                      // "EGP ${context.watch<ListOfProducts>().products![widget.productIndex].variations!.firstWhere((element) => element.id == context.watch<ListOfProducts>().products![widget.productIndex].getVariationId()).price}",
-                      "",
+                      "EGP ${watchProduct.getCurrentVariation().price}",
                       style: TextStyle(
                           fontSize: screenWidth * screenHeight / 10000),
                     )
@@ -62,7 +61,7 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
                 Column(
                   children: [
                     CircleAvatar(
-                      foregroundImage: AssetImage(product.brandLogoUrl!),
+                      foregroundImage: AssetImage(watchProduct.brandLogoUrl!),
                     ),
                     Text(
                       "${context.watch<ListOfProducts>().products![widget.productIndex].brandName}",
@@ -73,7 +72,7 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
                 )
               ],
             ),
-            !product.verifyColor(product.selectedColorIndex)
+            !watchProduct.verifyColor(watchProduct.selectedColorIndex)
                 ? Container()
                 : CustomColorSelector(
                     productIndex: widget.productIndex,
@@ -81,7 +80,7 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
                       setState(() {});
                     },
                   ),
-            product.verifySize(product.selectedSizeIndex)
+            watchProduct.verifySize(watchProduct.selectedSizeIndex)
                 ? Container()
                 : CustomSizeSelector(
                     productIndex: widget.productIndex,
@@ -89,7 +88,7 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
                       setState(() {});
                     },
                   ),
-            product.verifyMaterial(product.selectedMaterialIndex)
+            watchProduct.verifyMaterial(watchProduct.selectedMaterialIndex)
                 ? Container()
                 : CustomMaterialSelector(
                     productIndex: widget.productIndex,

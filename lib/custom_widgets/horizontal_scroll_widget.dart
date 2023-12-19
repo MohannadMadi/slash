@@ -1,24 +1,29 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'package:slash/custom_widgets/product_wrapper.dart';
 import 'package:slash/model/product_list.dart';
 import 'package:slash/screens/product_details_screen.dart';
 
-class CustomHorizontalScroll extends StatefulWidget {
+class CustomHorizontalProductScroll extends StatefulWidget {
   final String label;
-  const CustomHorizontalScroll({
-    super.key,
+
+  const CustomHorizontalProductScroll({
+    Key? key,
     required this.label,
-  });
+  }) : super(key: key);
 
   @override
-  State<CustomHorizontalScroll> createState() => _CustomHorizontalScrollState();
+  State<CustomHorizontalProductScroll> createState() =>
+      _CustomHorizontalScrollState();
 }
 
-class _CustomHorizontalScrollState extends State<CustomHorizontalScroll> {
+class _CustomHorizontalScrollState
+    extends State<CustomHorizontalProductScroll> {
   @override
   Widget build(BuildContext context) {
+    var watchProducts = context.watch<ListOfProducts>().products!;
     return Column(
       children: [
         Text(
@@ -28,19 +33,15 @@ class _CustomHorizontalScrollState extends State<CustomHorizontalScroll> {
         Wrap(
           direction: Axis.horizontal,
           children: List.generate(
-            context.watch<ListOfProducts>().products!.length,
+            watchProducts.length,
             (index) => InkWell(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => ProductScreen(productIndex: index)));
               },
               child: CustomProductWrapper(
-                  imageUrl: context
-                      .watch<ListOfProducts>()
-                      .products!
-                      .elementAt(index)
-                      .variations!
-                      .first
+                  imageUrl: watchProducts[index]
+                      .variations![0]
                       .productVarientImages![0],
                   size: 100),
             ),
