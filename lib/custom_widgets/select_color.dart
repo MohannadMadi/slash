@@ -44,6 +44,52 @@ class _CustomColorSelectorState extends State<CustomColorSelector> {
               onTap: () {
                 setState(() {
                   context.read<ListOfProducts>().selectedColorIndex = index;
+                  // this changes the index of the selcted size to the first size that exists for the selected color by getting the index of the first element that has an ID which intersects with an ID of the selected color
+
+                  context.read<ListOfProducts>().selectedSizeIndex = context
+                      .read<ListOfProducts>()
+                      .uniqueSizes!
+                      .indexOf(context
+                              .read<ListOfProducts>()
+                              .variationIdOfUniqueSize![
+                          context
+                              .read<ListOfProducts>()
+                              .findIntersection(
+                                  context
+                                      .read<ListOfProducts>()
+                                      .listOfSelectedColorIDs(context
+                                              .read<ListOfProducts>()
+                                              .uniqueColors![
+                                          context
+                                              .read<ListOfProducts>()
+                                              .selectedColorIndex]),
+                                  context
+                                      .read<ListOfProducts>()
+                                      .listOfSizeIDs())
+                              .first]!);
+                  // this changes the index of the selcted material to the first material that exists for the selected size by getting the index of the first element that has an ID which intersects with an ID of the selected size
+
+                  context.read<ListOfProducts>().selectedMaterialIndex = context
+                      .read<ListOfProducts>()
+                      .uniqueMaterials!
+                      .indexOf(context
+                              .read<ListOfProducts>()
+                              .variationIdOfUniqueMaterial![
+                          context
+                              .read<ListOfProducts>()
+                              .findIntersection(
+                                  context
+                                      .read<ListOfProducts>()
+                                      .listOfSelectedSizeIDs(context
+                                              .read<ListOfProducts>()
+                                              .uniqueSizes![
+                                          context
+                                              .read<ListOfProducts>()
+                                              .selectedSizeIndex]),
+                                  context
+                                      .read<ListOfProducts>()
+                                      .listOfMaterialIDs())
+                              .first]!);
                 });
                 widget.onchanged();
               },

@@ -15,8 +15,6 @@ class CustomSizeSelector extends StatefulWidget {
   State<CustomSizeSelector> createState() => _CustomSizeSelectorState();
 }
 
-int selectedIndex = 0;
-
 class _CustomSizeSelectorState extends State<CustomSizeSelector>
     with ChangeNotifier {
   @override
@@ -75,10 +73,34 @@ class _CustomSizeSelectorState extends State<CustomSizeSelector>
                             : InkWell(
                                 onTap: () {
                                   setState(() {
-                                    selectedIndex = index;
                                     context
                                         .read<ListOfProducts>()
                                         .selectedSizeIndex = index;
+
+                                    // this changes the index of the selcted material to the first material that exists for the selected size by getting the index of the first element that has an ID which intersects with an ID of the selected size
+                                    context.read<ListOfProducts>().selectedMaterialIndex = context
+                                        .read<ListOfProducts>()
+                                        .uniqueMaterials!
+                                        .indexOf(context
+                                                .read<ListOfProducts>()
+                                                .variationIdOfUniqueMaterial![
+                                            context
+                                                .read<ListOfProducts>()
+                                                .findIntersection(
+                                                    context
+                                                        .read<ListOfProducts>()
+                                                        .listOfSelectedSizeIDs(context
+                                                                .read<
+                                                                    ListOfProducts>()
+                                                                .uniqueSizes![
+                                                            context
+                                                                .read<
+                                                                    ListOfProducts>()
+                                                                .selectedSizeIndex]),
+                                                    context
+                                                        .read<ListOfProducts>()
+                                                        .listOfMaterialIDs())
+                                                .first]!);
                                   });
                                   widget.onchanged();
                                 },

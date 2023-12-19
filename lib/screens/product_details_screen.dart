@@ -10,7 +10,6 @@ import 'package:slash/custom_widgets/quantity_widget.dart';
 import 'package:slash/custom_widgets/scroll_animation.dart';
 import 'package:slash/custom_widgets/select_color.dart';
 import 'package:slash/custom_widgets/size_selector.dart';
-import 'package:slash/model/product.dart';
 import 'package:slash/model/product_list.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -38,7 +37,6 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
           mainAxisSize: MainAxisSize.max,
           children: [
             const Row(),
-            // CustomProductWrapper(product: widget.product, size: 300)
             CustomScrollAnimation(productIndex: widget.productIndex),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,7 +55,8 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
                               fontSize: screenWidth * screenHeight / 10000),
                     ),
                     Text(
-                      "EGP ${context.watch<ListOfProducts>().products![widget.productIndex].variations![0].price}",
+                      // "EGP ${context.watch<ListOfProducts>().products![widget.productIndex].variations!.firstWhere((element) => element.id == context.watch<ListOfProducts>().getVariationId()).price}",
+                      "",
                       style: TextStyle(
                           fontSize: screenWidth * screenHeight / 10000),
                     )
@@ -100,13 +99,19 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
             CutomDescriptionDisply(
               productIndex: widget.productIndex,
             ),
+            const SizedBox(
+              height: 30,
+            ),
             CustomQuantityWidget(productIndex: widget.productIndex),
+            const SizedBox(
+              height: 30,
+            ),
             CustomAddTocartButton(
               productIndex: widget.productIndex,
             ),
-            FloatingActionButton(onPressed: () {
-              print(context.read<ListOfProducts>().uniqueColors!.length);
-            })
+            const SizedBox(
+              height: 50,
+            )
           ],
         ),
       ),

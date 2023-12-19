@@ -16,6 +16,10 @@ class ListOfProducts extends ChangeNotifier {
   int selectedSizeIndex;
   int selectedMaterialIndex;
 
+  int selectedInkWellColorIndex;
+  int selectedInkwellSizeIndex;
+  int selectedInkwellMaterialIndex;
+
   ListOfProducts({
     this.products,
     this.uniqueColors,
@@ -27,6 +31,9 @@ class ListOfProducts extends ChangeNotifier {
     this.selectedColorIndex = 0,
     this.selectedSizeIndex = 0,
     this.selectedMaterialIndex = 0,
+    this.selectedInkWellColorIndex = -1,
+    this.selectedInkwellSizeIndex = -1,
+    this.selectedInkwellMaterialIndex = -1,
   });
 
   get getProducts => products;
@@ -147,6 +154,30 @@ class ListOfProducts extends ChangeNotifier {
     return keys;
   }
 
+  List listOfColorIDs() {
+    List<int> keys = [];
+    variationIdOfUniqueColor!.forEach((key, value) {
+      keys.add(key);
+    });
+    return keys;
+  }
+
+  List listOfSizeIDs() {
+    List<int> keys = [];
+    variationIdOfUniqueSize!.forEach((key, value) {
+      keys.add(key);
+    });
+    return keys;
+  }
+
+  List listOfMaterialIDs() {
+    List<int> keys = [];
+    variationIdOfUniqueMaterial!.forEach((key, value) {
+      keys.add(key);
+    });
+    return keys;
+  }
+
 //finding intersectionof 2 lists
   List<int> findIntersection<int>(List<int> list1, List<int> list2) {
     Set<int> set1 = Set<int>.from(list1);
@@ -155,5 +186,16 @@ class ListOfProducts extends ChangeNotifier {
     Set<int> intersection = set1.intersection(set2);
 
     return intersection.toList();
+  }
+
+  int getVariationId() {
+    return findIntersection(
+                listOfSelectedMaterialIDs(
+                    uniqueMaterials![selectedMaterialIndex]),
+                findIntersection(
+                    listOfSelectedColorIDs(uniqueColors![selectedColorIndex]),
+                    listOfSelectedSizeIDs(uniqueSizes![selectedSizeIndex])))
+            .first ??
+        [];
   }
 }
