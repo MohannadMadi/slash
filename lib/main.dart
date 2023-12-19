@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:slash/model/cart_item.dart';
 import 'package:slash/model/product.dart';
@@ -9,7 +10,6 @@ import 'package:slash/screens/home_screen.dart';
 
 void main() {
   runApp(MultiProvider(
-    child: const MyApp(),
     providers: [
       ChangeNotifierProvider(
         create: (context) => ListOfProducts(),
@@ -18,6 +18,7 @@ void main() {
         create: (context) => CartItem(),
       )
     ],
+    child: const MyApp(),
   ));
 }
 
@@ -50,7 +51,7 @@ Product product2 = Product(
     brandId: 1,
     rating: 4,
     variations: [variation2, variation1, variation3],
-    availableProperties: variation2.productPropertiesValues);
+    availableProperties: []);
 
 ProductVariation variation1 = ProductVariation(
     id: 100,
@@ -77,20 +78,17 @@ ProductVariation variation2 = ProductVariation(
       proAndVal6
     ]);
 ProductVariation variation3 = ProductVariation(
-    id: 300,
-    productId: 2,
-    price: 20,
-    quantity: 2,
-    inStock: true,
-    productVarientImages: [
-      "Assets/Images/bag.jpg",
-      "Assets/Images/gettyimages-167759603-612x612.jpg"
-    ],
-    productPropertiesValues: [
-      proAndVal2,
-      proAndVal3,
-      proAndVal7
-    ]);
+  id: 300,
+  productId: 2,
+  price: 2000,
+  quantity: 2,
+  inStock: true,
+  productVarientImages: [
+    "Assets/Images/bag.jpg",
+    "Assets/Images/gettyimages-167759603-612x612.jpg"
+  ],
+  productPropertiesValues: [proAndVal2, proAndVal3],
+);
 
 ProductPropertyAndValue proAndVal1 =
     ProductPropertyAndValue(property: "Color", value: "0xffffff00");
@@ -122,43 +120,23 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     context.read<ListOfProducts>().products = [];
-    context.read<ListOfProducts>().uniqueColors = [];
-    context.read<ListOfProducts>().uniqueMaterials = [];
-    context.read<ListOfProducts>().uniqueSizes = [];
-    context.read<ListOfProducts>().variationIdOfUniqueColor = {};
-    context.read<ListOfProducts>().variationIdOfUniqueSize = {};
-    context.read<ListOfProducts>().variationIdOfUniqueMaterial = {};
 
     super.initState();
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
+    context.read<ListOfProducts>().addProduct(product1);
+    context.read<ListOfProducts>().addProduct(product2);
 
     return MaterialApp(
       theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: const Color(0x00000000),
           appBarTheme: const AppBarTheme(backgroundColor: Color(0x00000000))),
-      home: Scaffold(
+      home: const Scaffold(
         body: Column(
           children: [
             HomeScreen(),
-            FloatingActionButton(
-              onPressed: () {
-                context.read<ListOfProducts>().addProduct(product1);
-                context.read<ListOfProducts>().addProduct(product2);
-                print(context.read<ListOfProducts>().variationIdOfUniqueColor);
-                print(context.read<ListOfProducts>().variationIdOfUniqueSize);
-                print(
-                    context.read<ListOfProducts>().variationIdOfUniqueMaterial);
-              },
-            )
           ],
         ),
       ),

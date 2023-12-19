@@ -22,7 +22,7 @@ class _CutomDescriptionDisplyState extends State<CutomDescriptionDisply> {
             tileColor: Colors.grey[900],
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            title: Text(
+            title: const Text(
               "Description",
               style: TextStyle(fontSize: 25),
             ),

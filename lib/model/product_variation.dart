@@ -20,5 +20,4 @@ class ProductVariation extends ChangeNotifier {
     this.productVarientImages,
     this.productPropertiesValues,
   });
-  void setVariation(ProductVariation) {}
 }

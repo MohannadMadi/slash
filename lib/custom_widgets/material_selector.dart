@@ -38,42 +38,71 @@ class _CustomMaterialSelectorState extends State<CustomMaterialSelector> {
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
-                itemCount:
-                    context.watch<ListOfProducts>().uniqueMaterials!.length,
+                itemCount: context
+                    .watch<ListOfProducts>()
+                    .products![widget.productIndex]
+                    .uniqueMaterials!
+                    .length,
                 itemBuilder: (context, index) {
-                  return
+                  return context
+                              .watch<ListOfProducts>()
+                              .products![widget.productIndex]
+                              .findIntersection(
+                                  //selected Size id list
+                                  context
+                                      .watch<ListOfProducts>()
+                                      .products![widget.productIndex]
+                                      .listOfSelectedSizeIDs(context
+                                              .watch<ListOfProducts>()
+                                              .products![widget.productIndex]
+                                              .uniqueSizes![
+                                          context
+                                              .watch<ListOfProducts>()
+                                              .products![widget.productIndex]
+                                              .selectedSizeIndex]),
+                                  //current material id list
+
+                                  context
+                                      .watch<ListOfProducts>()
+                                      .products![widget.productIndex]
+                                      .listOfSelectedMaterialIDs(context
+                                          .watch<ListOfProducts>()
+                                          .products![widget.productIndex]
+                                          .uniqueMaterials![index])) ==
+                          []
+                      ? null
+                      :
+
                       //condition to find intersection between the three variation id's , if intersection with the material[index]  >0 then we're fine:)
+
                       context
                               .watch<ListOfProducts>()
+                              .products![widget.productIndex]
                               .findIntersection(
                                   //selected size id list
                                   context
                                       .watch<ListOfProducts>()
+                                      .products![widget.productIndex]
                                       .listOfSelectedSizeIDs(context
                                               .watch<ListOfProducts>()
+                                              .products![widget.productIndex]
                                               .uniqueSizes![
                                           context
                                               .watch<ListOfProducts>()
+                                              .products![widget.productIndex]
                                               .selectedSizeIndex]),
                                   context
                                       .watch<ListOfProducts>()
+                                      .products![widget.productIndex]
                                       .findIntersection(
                                           //selected color id list
                                           context
                                               .watch<ListOfProducts>()
-                                              .listOfSelectedColorIDs(context
-                                                      .watch<ListOfProducts>()
-                                                      .uniqueColors![
-                                                  context
-                                                      .watch<ListOfProducts>()
-                                                      .selectedColorIndex]),
+                                              .products![widget.productIndex]
+                                              .listOfSelectedColorIDs(context.watch<ListOfProducts>().products![widget.productIndex].uniqueColors![context.watch<ListOfProducts>().products![widget.productIndex].selectedColorIndex]),
                                           //current Size id list
 
-                                          context
-                                              .watch<ListOfProducts>()
-                                              .listOfSelectedMaterialIDs(context
-                                                  .watch<ListOfProducts>()
-                                                  .uniqueMaterials![index])))
+                                          context.watch<ListOfProducts>().products![widget.productIndex].listOfSelectedMaterialIDs(context.watch<ListOfProducts>().products![widget.productIndex].uniqueMaterials![index])))
                               .isEmpty
                           ? Container()
                           : InkWell(
@@ -82,6 +111,7 @@ class _CustomMaterialSelectorState extends State<CustomMaterialSelector> {
                                   selectedIndex = index;
                                   context
                                       .read<ListOfProducts>()
+                                      .products![widget.productIndex]
                                       .selectedMaterialIndex = index;
                                   widget.onchanged();
                                 });
@@ -98,6 +128,8 @@ class _CustomMaterialSelectorState extends State<CustomMaterialSelector> {
                                       borderRadius: BorderRadius.circular(6),
                                       color: context
                                                   .watch<ListOfProducts>()
+                                                  .products![
+                                                      widget.productIndex]
                                                   .selectedMaterialIndex ==
                                               index
                                           ? Colors.green[500]
@@ -105,6 +137,7 @@ class _CustomMaterialSelectorState extends State<CustomMaterialSelector> {
                                   child: Text(
                                     context
                                         .watch<ListOfProducts>()
+                                        .products![widget.productIndex]
                                         .uniqueMaterials![index],
                                     style: const TextStyle(
                                         color: Colors.black, fontSize: 20),

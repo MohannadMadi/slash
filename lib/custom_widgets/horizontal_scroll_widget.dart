@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:slash/custom_widgets/product_wrapper.dart';
-import 'package:slash/model/product.dart';
 import 'package:slash/model/product_list.dart';
 import 'package:slash/screens/product_details_screen.dart';
 

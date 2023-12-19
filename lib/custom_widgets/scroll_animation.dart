@@ -1,10 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:slash/custom_widgets/product_wrapper.dart';
-import 'package:slash/model/product.dart';
 import 'package:slash/model/product_list.dart';
 
 class CustomScrollAnimation extends StatefulWidget {
@@ -46,8 +43,7 @@ class _CustomScrollAnimationState extends State<CustomScrollAnimation> {
           itemCount: context
               .watch<ListOfProducts>()
               .products![widget.productIndex]
-              .variations!
-              .elementAt(0)
+              .variations![0]
               .productVarientImages!
               .length,
           itemBuilder: (context, index, realIndex) => Column(
@@ -94,10 +90,10 @@ class _CustomScrollAnimationState extends State<CustomScrollAnimation> {
                       highlightColor: Colors.transparent,
                       onTap: () {
                         setState(() {
-                          print(selectedIndex);
+                          debugPrint(selectedIndex.toString());
                         });
                         buttonCarouselController.animateToPage(index,
-                            duration: Duration(milliseconds: 300));
+                            duration: const Duration(milliseconds: 300));
                       },
                       child: Container(
                           width: screenWidth / 8 - screenWidth / 90,

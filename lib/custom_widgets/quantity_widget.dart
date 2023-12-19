@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
-import 'package:slash/model/product_list.dart';
 
 class CustomQuantityWidget extends StatefulWidget {
   final int productIndex;
@@ -16,7 +13,6 @@ int itemCounter = 1;
 class _CustomQuantityWidgetState extends State<CustomQuantityWidget> {
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return SizedBox(
@@ -28,7 +24,7 @@ class _CustomQuantityWidgetState extends State<CustomQuantityWidget> {
               "Quantity",
               style: TextStyle(fontSize: 20),
             ),
-            SizedBox(
+            const SizedBox(
               width: 15,
             ),
             Row(
@@ -44,9 +40,9 @@ class _CustomQuantityWidgetState extends State<CustomQuantityWidget> {
                     width: 20,
                     decoration: BoxDecoration(
                         border: Border.all(width: 2, color: Colors.white),
-                        borderRadius: BorderRadiusDirectional.horizontal(
+                        borderRadius: const BorderRadiusDirectional.horizontal(
                             start: Radius.circular(5), end: Radius.zero)),
-                    child: Text(
+                    child: const Text(
                       "-",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -61,7 +57,8 @@ class _CustomQuantityWidgetState extends State<CustomQuantityWidget> {
                   ),
                   child: Text(
                     "$itemCounter",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
                 InkWell(
@@ -75,9 +72,9 @@ class _CustomQuantityWidgetState extends State<CustomQuantityWidget> {
                     width: 20,
                     decoration: BoxDecoration(
                         border: Border.all(width: 2, color: Colors.white),
-                        borderRadius: BorderRadiusDirectional.horizontal(
+                        borderRadius: const BorderRadiusDirectional.horizontal(
                             end: Radius.circular(5), start: Radius.zero)),
-                    child: Text(
+                    child: const Text(
                       "+",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

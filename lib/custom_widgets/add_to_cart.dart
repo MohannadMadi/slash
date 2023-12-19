@@ -31,7 +31,7 @@ class _CustomAddTocartButtonState extends State<CustomAddTocartButton> {
                     color: Colors.green[500]),
                 width: screenWidth - screenWidth / 20,
                 height: screenHeight / 16,
-                child: Text(
+                child: const Text(
                   "Add to cart",
                   style: TextStyle(color: Colors.black, fontSize: 30),
                 ),
@@ -45,7 +45,7 @@ class _CustomAddTocartButtonState extends State<CustomAddTocartButton> {
                     color: Colors.grey[900]),
                 width: screenWidth - screenWidth / 20,
                 height: screenHeight / 16,
-                child: Text(
+                child: const Text(
                   "Out of stock",
                   style: TextStyle(color: Colors.black, fontSize: 30),
                 ),

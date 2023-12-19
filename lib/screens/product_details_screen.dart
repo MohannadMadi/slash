@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:slash/custom_widgets/add_to_cart.dart';
 import 'package:slash/custom_widgets/description.dart';
@@ -55,7 +54,7 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
                               fontSize: screenWidth * screenHeight / 10000),
                     ),
                     Text(
-                      // "EGP ${context.watch<ListOfProducts>().products![widget.productIndex].variations!.firstWhere((element) => element.id == context.watch<ListOfProducts>().getVariationId()).price}",
+                      // "EGP ${context.watch<ListOfProducts>().products![widget.productIndex].variations!.firstWhere((element) => element.id == context.watch<ListOfProducts>().products![widget.productIndex].getVariationId()).price}",
                       "",
                       style: TextStyle(
                           fontSize: screenWidth * screenHeight / 10000),
@@ -79,18 +78,30 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
                 )
               ],
             ),
-            CustomColorSelector(
-              productIndex: widget.productIndex,
-              onchanged: () {
-                setState(() {});
-              },
-            ),
-            CustomSizeSelector(
-              productIndex: widget.productIndex,
-              onchanged: () {
-                setState(() {});
-              },
-            ),
+            context
+                        .watch<ListOfProducts>()
+                        .products![widget.productIndex]
+                        .uniqueColors ==
+                    []
+                ? Container()
+                : CustomColorSelector(
+                    productIndex: widget.productIndex,
+                    onchanged: () {
+                      setState(() {});
+                    },
+                  ),
+            context
+                        .watch<ListOfProducts>()
+                        .products![widget.productIndex]
+                        .uniqueSizes ==
+                    []
+                ? Container()
+                : CustomSizeSelector(
+                    productIndex: widget.productIndex,
+                    onchanged: () {
+                      setState(() {});
+                    },
+                  ),
             CustomMaterialSelector(
                 productIndex: widget.productIndex,
                 onchanged: () {
