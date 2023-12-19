@@ -23,8 +23,6 @@ class _CustomScrollAnimationState extends State<CustomScrollAnimation> {
     double screenHeight = MediaQuery.of(context).size.height;
     var watchProduct =
         context.watch<ListOfProducts>().products![widget.productIndex];
-    var readProduct =
-        context.read<ListOfProducts>().products![widget.productIndex];
     return Column(
       children: [
         CarouselSlider.builder(

@@ -20,7 +20,6 @@ class _CustomAddTocartButtonState extends State<CustomAddTocartButton> {
         context.watch<ListOfProducts>().products![widget.productIndex];
     var readProduct =
         context.read<ListOfProducts>().products![widget.productIndex];
-    var watchCartItem = context.watch<CartItem>();
     var readCartItem = context.read<CartItem>();
     return Center(
       child: watchProduct.getCurrentVariation().inStock!

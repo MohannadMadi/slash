@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:slash/custom_widgets/custom_Cart_item_scroll.dart';
-import 'package:slash/custom_widgets/horizontal_scroll_widget.dart';
 import 'package:slash/model/cart_item.dart';
 
 class MyCart extends StatefulWidget {

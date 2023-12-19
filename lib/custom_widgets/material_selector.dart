@@ -20,7 +20,7 @@ class _CustomMaterialSelectorState extends State<CustomMaterialSelector> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    var product =
+    var watchProduct =
         context.watch<ListOfProducts>().products![widget.productIndex];
     return Column(
       children: [
@@ -40,19 +40,15 @@ class _CustomMaterialSelectorState extends State<CustomMaterialSelector> {
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
-                itemCount: context
-                    .watch<ListOfProducts>()
-                    .products![widget.productIndex]
-                    .uniqueMaterials!
-                    .length,
+                itemCount: watchProduct.uniqueMaterials!.length,
                 itemBuilder: (context, index) {
-                  return product.verifyMaterial(index)
+                  return watchProduct.verifyMaterial(index)
                       ? Container()
                       : InkWell(
                           onTap: () {
                             setState(() {
                               selectedIndex = index;
-                              product.selectedMaterialIndex = index;
+                              watchProduct.selectedMaterialIndex = index;
                               widget.onchanged();
                             });
                           },
@@ -65,11 +61,12 @@ class _CustomMaterialSelectorState extends State<CustomMaterialSelector> {
                               ),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(6),
-                                  color: product.selectedMaterialIndex == index
+                                  color: watchProduct.selectedMaterialIndex ==
+                                          index
                                       ? Colors.green[500]
                                       : Colors.grey[900]),
                               child: Text(
-                                product.uniqueMaterials![index],
+                                watchProduct.uniqueMaterials![index],
                                 style: const TextStyle(
                                     color: Colors.black, fontSize: 20),
                               ),

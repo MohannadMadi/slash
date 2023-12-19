@@ -36,11 +36,7 @@ class _CustomColorSelectorState extends State<CustomColorSelector> {
           child: ListView.builder(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemCount: context
-                .watch<ListOfProducts>()
-                .products![widget.productIndex]
-                .uniqueColors!
-                .length,
+            itemCount: watchProduct.uniqueColors!.length,
             itemBuilder: (context, index) => !watchProduct.verifyColor(index)
                 ? Container()
                 : InkWell(
@@ -48,10 +44,7 @@ class _CustomColorSelectorState extends State<CustomColorSelector> {
                       watchProduct.selectedColorIndex == index
                           ? () {}
                           : setState(() {
-                              context
-                                  .read<ListOfProducts>()
-                                  .products![widget.productIndex]
-                                  .selectedColorIndex = index;
+                              readProduct.selectedColorIndex = index;
                               // this changes the index of the selcted size to the first size that exists for the selected color by getting the index of the first element that has an ID which intersects with an ID of the selected color
 
                               // this changes the index of the selcted material to the first material that exists for the selected color by getting the index of the first element that has an ID which intersects with an ID of the selected color
@@ -75,8 +68,6 @@ class _CustomColorSelectorState extends State<CustomColorSelector> {
                                                           .selectedColorIndex]),
                                               watchProduct.listOfMaterialIDs())
                                           .isNotEmpty) {
-                                print("ssssssssssss");
-
                                 //the index of the material =
                                 readProduct.selectedMaterialIndex = readProduct
                                     .uniqueMaterials!
@@ -93,7 +84,6 @@ class _CustomColorSelectorState extends State<CustomColorSelector> {
                                             .first]!);
                               } else {
                                 //
-                                print("pppppppppppppppp");
 
                                 readProduct.selectedSizeIndex =
                                     readProduct.uniqueSizes!.indexOf(readProduct
@@ -108,27 +98,13 @@ class _CustomColorSelectorState extends State<CustomColorSelector> {
                                             .first]!);
                               }
                             });
-//
-                      print(watchProduct.listOfSelectedColorIDs(watchProduct
-                          .uniqueColors![watchProduct.selectedColorIndex]));
-                      //
-                      print(watchProduct.listOfSelectedSizeIDs(watchProduct
-                          .uniqueSizes![watchProduct.selectedSizeIndex]));
-
-                      //
-                      print(
-                          "--------------------${watchProduct.findIntersection(watchProduct.listOfSelectedColorIDs(watchProduct.uniqueColors![watchProduct.selectedColorIndex]), watchProduct.listOfSelectedSizeIDs(watchProduct.uniqueSizes![watchProduct.selectedSizeIndex]))}");
 
                       // print(watchProduct.verifyMaterial(1));
                       widget.onchanged();
                     },
                     child: Container(
                       width: 30,
-                      decoration: context
-                                  .watch<ListOfProducts>()
-                                  .products![widget.productIndex]
-                                  .selectedColorIndex ==
-                              index
+                      decoration: watchProduct.selectedColorIndex == index
                           ? BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
                               border:
@@ -140,10 +116,8 @@ class _CustomColorSelectorState extends State<CustomColorSelector> {
                                 ]),
                       padding: const EdgeInsets.all(2),
                       child: CircleAvatar(
-                        backgroundColor: getColorFromHex(context
-                            .watch<ListOfProducts>()
-                            .products![widget.productIndex]
-                            .uniqueColors![index]),
+                        backgroundColor:
+                            getColorFromHex(watchProduct.uniqueColors![index]),
                       ),
                     ),
                   ),
