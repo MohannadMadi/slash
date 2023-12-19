@@ -59,8 +59,13 @@ ProductVariation variation1 = ProductVariation(
     price: 200,
     quantity: 20,
     inStock: true,
-    productVarientImages: ["Assets/Images/hmgoepprod.jpeg"],
-    productPropertiesValues: [proAndVal1, proAndVal3, proAndVal7]);
+    productVarientImages: [
+      "Assets/Images/hmgoepprod.jpeg"
+    ],
+    productPropertiesValues: [
+      proAndVal2,
+      proAndVal5,
+    ]);
 
 ProductVariation variation2 = ProductVariation(
     id: 200,
@@ -73,7 +78,7 @@ ProductVariation variation2 = ProductVariation(
       "Assets/Images/gettyimages-167759603-612x612.jpg"
     ],
     productPropertiesValues: [
-      proAndVal2,
+      proAndVal1,
       proAndVal4,
       proAndVal6
     ]);
@@ -87,7 +92,7 @@ ProductVariation variation3 = ProductVariation(
     "Assets/Images/bag.jpg",
     "Assets/Images/gettyimages-167759603-612x612.jpg"
   ],
-  productPropertiesValues: [proAndVal2, proAndVal3],
+  productPropertiesValues: [proAndVal2, proAndVal7],
 );
 
 ProductPropertyAndValue proAndVal1 =

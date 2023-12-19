@@ -18,7 +18,10 @@ class _CustomSizeSelectorState extends State<CustomSizeSelector> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-
+    var watchProduct =
+        context.watch<ListOfProducts>().products![widget.productIndex];
+    var readProduct =
+        context.read<ListOfProducts>().products![widget.productIndex];
     return Column(
       children: [
         Row(
@@ -44,71 +47,49 @@ class _CustomSizeSelectorState extends State<CustomSizeSelector> {
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
-                  itemCount: context
-                      .watch<ListOfProducts>()
-                      .products![widget.productIndex]
-                      .uniqueSizes!
-                      .length,
+                  itemCount: watchProduct.uniqueSizes!.length,
                   itemBuilder: (context, index) {
                     return
 // if the intersection of the color id's and the size[index] id's > 0 it should work fine :)
-                        context
-                                .watch<ListOfProducts>()
-                                .products![widget.productIndex]
-                                .findIntersection(
-                                    context
-                                        .watch<ListOfProducts>()
-                                        .products![widget.productIndex]
-                                        .listOfSelectedColorIDs(context
-                                                .watch<ListOfProducts>()
-                                                .products![widget.productIndex]
-                                                .uniqueColors![
-                                            context
-                                                .watch<ListOfProducts>()
-                                                .products![widget.productIndex]
-                                                .selectedColorIndex]),
-                                    context
-                                        .watch<ListOfProducts>()
-                                        .products![widget.productIndex]
-                                        .listOfSelectedSizeIDs(context
-                                            .watch<ListOfProducts>()
-                                            .products![widget.productIndex]
-                                            .uniqueSizes![index]))
-                                .isEmpty
+                        // watchProduct
+                        //         .findIntersection(
+                        //             watchProduct.listOfSelectedColorIDs(
+                        //                 watchProduct.uniqueColors![
+                        //                     watchProduct.selectedColorIndex]),
+                        //             watchProduct.listOfSelectedSizeIDs(
+                        //                 watchProduct.uniqueSizes![index]))
+                        //         .isEmpty
+                        watchProduct.verifySize(index)
                             ? Container()
                             : InkWell(
                                 onTap: () {
                                   setState(() {
-                                    context
-                                        .read<ListOfProducts>()
-                                        .products![widget.productIndex]
-                                        .selectedSizeIndex = index;
+                                    readProduct.selectedSizeIndex = index;
 
                                     // this changes the index of the selcted material to the first material that exists for the selected size by getting the index of the first element that has an ID which intersects with an ID of the selected size
-                                    context.read<ListOfProducts>().products![widget.productIndex].selectedMaterialIndex = context
-                                        .read<ListOfProducts>()
-                                        .products![widget.productIndex]
-                                        .uniqueMaterials!
-                                        .indexOf(context
-                                                .read<ListOfProducts>()
-                                                .products![widget.productIndex]
-                                                .variationIdOfUniqueMaterial![
-                                            context
-                                                .read<ListOfProducts>()
-                                                .products![widget.productIndex]
-                                                .findIntersection(
-                                                    context.read<ListOfProducts>().products![widget.productIndex].listOfSelectedSizeIDs(context.read<ListOfProducts>().products![widget.productIndex].uniqueSizes![context
-                                                        .read<ListOfProducts>()
-                                                        .products![
-                                                            widget.productIndex]
+                                    if (readProduct
+                                        .findIntersection(
+                                            readProduct.listOfSelectedSizeIDs(
+                                                readProduct.uniqueSizes![
+                                                    readProduct
                                                         .selectedSizeIndex]),
-                                                    context.read<ListOfProducts>().products![widget.productIndex].findIntersection(
-                                                        context
-                                                            .read<ListOfProducts>()
-                                                            .products![widget.productIndex]
-                                                            .listOfSelectedSizeIDs(context.read<ListOfProducts>().products![widget.productIndex].uniqueSizes![context.read<ListOfProducts>().products![widget.productIndex].selectedSizeIndex]),
-                                                        context.read<ListOfProducts>().products![widget.productIndex].listOfMaterialIDs()))
-                                                .first]!);
+                                            readProduct.listOfMaterialIDs())
+                                        .isNotEmpty) {
+                                      readProduct.selectedMaterialIndex = readProduct
+                                          .uniqueMaterials!
+                                          .indexOf(readProduct
+                                                  .variationIdOfUniqueMaterial![
+                                              readProduct
+                                                  .findIntersection(
+                                                      readProduct.listOfSelectedSizeIDs(
+                                                          readProduct
+                                                                  .uniqueSizes![
+                                                              readProduct
+                                                                  .selectedSizeIndex]),
+                                                      readProduct
+                                                          .listOfMaterialIDs())
+                                                  .first]!);
+                                    }
                                   });
                                   widget.onchanged();
                                 },
@@ -122,19 +103,12 @@ class _CustomSizeSelectorState extends State<CustomSizeSelector> {
                                     ),
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(6),
-                                        color: context
-                                                    .watch<ListOfProducts>()
-                                                    .products![
-                                                        widget.productIndex]
-                                                    .selectedSizeIndex ==
+                                        color: watchProduct.selectedSizeIndex ==
                                                 index
                                             ? Colors.green[500]
                                             : Colors.grey[900]),
                                     child: Text(
-                                      context
-                                          .watch<ListOfProducts>()
-                                          .products![widget.productIndex]
-                                          .uniqueSizes![index],
+                                      watchProduct.uniqueSizes![index],
                                       style: const TextStyle(
                                           color: Colors.black, fontSize: 20),
                                     ),

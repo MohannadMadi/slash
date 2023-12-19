@@ -13,7 +13,7 @@ class CustomColorSelector extends StatefulWidget {
 }
 
 int groupValue = 0;
-
+bool ispressed = false;
 //list to show colors only once
 
 Color getColorFromHex(String hexColor) {
@@ -25,7 +25,10 @@ class _CustomColorSelectorState extends State<CustomColorSelector> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-
+    var watchProduct =
+        context.watch<ListOfProducts>().products![widget.productIndex];
+    var readProduct =
+        context.read<ListOfProducts>().products![widget.productIndex];
     return SizedBox(
         width: screenWidth,
         height: 30,
@@ -38,114 +41,112 @@ class _CustomColorSelectorState extends State<CustomColorSelector> {
                 .products![widget.productIndex]
                 .uniqueColors!
                 .length,
-            itemBuilder: (context, index) => InkWell(
-              onTap: () {
-                setState(() {
-                  context
-                      .read<ListOfProducts>()
-                      .products![widget.productIndex]
-                      .selectedColorIndex = index;
-                  // this changes the index of the selcted size to the first size that exists for the selected color by getting the index of the first element that has an ID which intersects with an ID of the selected color
-
-                  context
-                          .read<ListOfProducts>()
-                          .products![widget.productIndex]
-                          .selectedSizeIndex =
-                      context
-                          .read<ListOfProducts>()
-                          .products![widget.productIndex]
-                          .uniqueSizes!
-                          .indexOf(context
-                                  .read<ListOfProducts>()
-                                  .products![widget.productIndex]
-                                  .variationIdOfUniqueSize![
+            itemBuilder: (context, index) => !watchProduct.verifyColor(index)
+                ? Container()
+                : InkWell(
+                    onTap: () {
+                      watchProduct.selectedColorIndex == index
+                          ? () {}
+                          : setState(() {
                               context
                                   .read<ListOfProducts>()
                                   .products![widget.productIndex]
-                                  .findIntersection(
-                                      context
-                                          .read<ListOfProducts>()
-                                          .products![widget.productIndex]
-                                          .listOfSelectedColorIDs(
-                                              context
-                                                      .read<ListOfProducts>()
-                                                      .products![
-                                                          widget.productIndex]
-                                                      .uniqueColors![
-                                                  context
-                                                      .read<ListOfProducts>()
-                                                      .products![
-                                                          widget.productIndex]
-                                                      .selectedColorIndex]),
-                                      context
-                                          .read<ListOfProducts>()
-                                          .products![widget.productIndex]
-                                          .listOfSizeIDs())
-                                  .first]!);
-                  // this changes the index of the selcted material to the first material that exists for the selected size by getting the index of the first element that has an ID which intersects with an ID of the selected size
+                                  .selectedColorIndex = index;
+                              // this changes the index of the selcted size to the first size that exists for the selected color by getting the index of the first element that has an ID which intersects with an ID of the selected color
 
-                  context
-                          .read<ListOfProducts>()
-                          .products![widget.productIndex]
-                          .selectedMaterialIndex =
-                      context
-                          .read<ListOfProducts>()
-                          .products![widget.productIndex]
-                          .uniqueMaterials!
-                          .indexOf(context
-                                  .read<ListOfProducts>()
+                              // this changes the index of the selcted material to the first material that exists for the selected color by getting the index of the first element that has an ID which intersects with an ID of the selected color
+
+                              if (
+                                  //if there is no size for the selected color
+                                  watchProduct
+                                          .findIntersection(
+                                              watchProduct.listOfSelectedColorIDs(
+                                                  watchProduct.uniqueColors![
+                                                      watchProduct
+                                                          .selectedColorIndex]),
+                                              watchProduct.listOfSizeIDs())
+                                          .isEmpty &&
+                                      // and there is a material for the selected color
+                                      watchProduct
+                                          .findIntersection(
+                                              watchProduct.listOfSelectedColorIDs(
+                                                  watchProduct.uniqueColors![
+                                                      watchProduct
+                                                          .selectedColorIndex]),
+                                              watchProduct.listOfMaterialIDs())
+                                          .isNotEmpty) {
+                                print("ssssssssssss");
+
+                                //the index of the material =
+                                readProduct.selectedMaterialIndex = readProduct
+                                    .uniqueMaterials!
+                                    .indexOf(readProduct
+                                            .variationIdOfUniqueMaterial![
+                                        watchProduct
+                                            .findIntersection(
+                                                watchProduct.listOfSelectedColorIDs(
+                                                    watchProduct.uniqueColors![
+                                                        watchProduct
+                                                            .selectedColorIndex]),
+                                                watchProduct
+                                                    .listOfMaterialIDs())
+                                            .first]!);
+                              } else {
+                                //
+                                print("pppppppppppppppp");
+
+                                readProduct.selectedSizeIndex =
+                                    readProduct.uniqueSizes!.indexOf(readProduct
+                                            .variationIdOfUniqueSize![
+                                        readProduct
+                                            .findIntersection(
+                                                watchProduct.listOfSizeIDs(),
+                                                watchProduct.listOfSelectedColorIDs(
+                                                    watchProduct.uniqueColors![
+                                                        watchProduct
+                                                            .selectedColorIndex]))
+                                            .first]!);
+                              }
+                            });
+//
+                      print(watchProduct.listOfSelectedColorIDs(watchProduct
+                          .uniqueColors![watchProduct.selectedColorIndex]));
+                      //
+                      print(watchProduct.listOfSelectedSizeIDs(watchProduct
+                          .uniqueSizes![watchProduct.selectedSizeIndex]));
+
+                      //
+                      print(
+                          "--------------------${watchProduct.findIntersection(watchProduct.listOfSelectedColorIDs(watchProduct.uniqueColors![watchProduct.selectedColorIndex]), watchProduct.listOfSelectedSizeIDs(watchProduct.uniqueSizes![watchProduct.selectedSizeIndex]))}");
+
+                      // print(watchProduct.verifyMaterial(1));
+                      widget.onchanged();
+                    },
+                    child: Container(
+                      width: 30,
+                      decoration: context
+                                  .watch<ListOfProducts>()
                                   .products![widget.productIndex]
-                                  .variationIdOfUniqueMaterial![
-                              context
-                                  .read<ListOfProducts>()
-                                  .products![widget.productIndex]
-                                  .findIntersection(
-                                      context
-                                          .read<ListOfProducts>()
-                                          .products![widget.productIndex]
-                                          .listOfSelectedSizeIDs(
-                                              context
-                                                      .read<ListOfProducts>()
-                                                      .products![
-                                                          widget.productIndex]
-                                                      .uniqueSizes![
-                                                  context
-                                                      .read<ListOfProducts>()
-                                                      .products![
-                                                          widget.productIndex]
-                                                      .selectedSizeIndex]),
-                                      context
-                                          .read<ListOfProducts>()
-                                          .products![widget.productIndex]
-                                          .listOfMaterialIDs())
-                                  .first]!);
-                });
-                widget.onchanged();
-              },
-              child: Container(
-                width: 30,
-                decoration: context
+                                  .selectedColorIndex ==
+                              index
+                          ? BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              border:
+                                  Border.all(width: 1.5, color: Colors.white))
+                          : BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              boxShadow: const [
+                                  BoxShadow(color: Colors.white, blurRadius: 10)
+                                ]),
+                      padding: const EdgeInsets.all(2),
+                      child: CircleAvatar(
+                        backgroundColor: getColorFromHex(context
                             .watch<ListOfProducts>()
                             .products![widget.productIndex]
-                            .selectedColorIndex ==
-                        index
-                    ? BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        border: Border.all(width: 1.5, color: Colors.white))
-                    : BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        boxShadow: const [
-                            BoxShadow(color: Colors.white, blurRadius: 10)
-                          ]),
-                padding: const EdgeInsets.all(2),
-                child: CircleAvatar(
-                  backgroundColor: getColorFromHex(context
-                      .watch<ListOfProducts>()
-                      .products![widget.productIndex]
-                      .uniqueColors![index]),
-                ),
-              ),
-            ),
+                            .uniqueColors![index]),
+                      ),
+                    ),
+                  ),
           ),
         ));
   }

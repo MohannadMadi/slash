@@ -27,7 +27,8 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-
+    var product =
+        context.watch<ListOfProducts>().products![widget.productIndex];
     return Scaffold(
       appBar: AppBar(title: const Text("Product details")),
       body: SingleChildScrollView(
@@ -44,10 +45,7 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      context
-                          .watch<ListOfProducts>()
-                          .products![widget.productIndex]
-                          .name!,
+                      product.name!,
                       style:
                           //making the fontsize change according to both screen height and width :)
                           TextStyle(
@@ -64,10 +62,7 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
                 Column(
                   children: [
                     CircleAvatar(
-                      foregroundImage: AssetImage(context
-                          .watch<ListOfProducts>()
-                          .products![widget.productIndex]
-                          .brandLogoUrl!),
+                      foregroundImage: AssetImage(product.brandLogoUrl!),
                     ),
                     Text(
                       "${context.watch<ListOfProducts>().products![widget.productIndex].brandName}",
@@ -78,11 +73,7 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
                 )
               ],
             ),
-            context
-                        .watch<ListOfProducts>()
-                        .products![widget.productIndex]
-                        .uniqueColors ==
-                    []
+            !product.verifyColor(product.selectedColorIndex)
                 ? Container()
                 : CustomColorSelector(
                     productIndex: widget.productIndex,
@@ -90,11 +81,7 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
                       setState(() {});
                     },
                   ),
-            context
-                        .watch<ListOfProducts>()
-                        .products![widget.productIndex]
-                        .uniqueSizes ==
-                    []
+            product.verifySize(product.selectedSizeIndex)
                 ? Container()
                 : CustomSizeSelector(
                     productIndex: widget.productIndex,
@@ -102,11 +89,13 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
                       setState(() {});
                     },
                   ),
-            CustomMaterialSelector(
-                productIndex: widget.productIndex,
-                onchanged: () {
-                  setState(() {});
-                }),
+            product.verifyMaterial(product.selectedMaterialIndex)
+                ? Container()
+                : CustomMaterialSelector(
+                    productIndex: widget.productIndex,
+                    onchanged: () {
+                      setState(() {});
+                    }),
             CutomDescriptionDisply(
               productIndex: widget.productIndex,
             ),

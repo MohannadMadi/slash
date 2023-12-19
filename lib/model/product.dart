@@ -240,23 +240,26 @@ class Product extends ChangeNotifier {
     List<String> properties = [];
     //if there is a color in uniqueColors list it adds color property to properties
     if (uniqueColors != []) {
-      properties.add("Color");
+      properties.add(uniqueColors![selectedColorIndex]);
       // if the intersection of the selected color ID's variation contains a size property it adds size to the list
       if (findIntersection(
               listOfSelectedColorIDs(uniqueColors![selectedColorIndex]),
               listOfSizeIDs()) !=
           []) {
-        properties.add("Size");
+        properties.add(uniqueSizes![selectedSizeIndex]);
 
         //if there is an intersection between all properties, add material
         if (findIntersection(
                 findIntersection(
                     listOfSelectedColorIDs(uniqueColors![selectedColorIndex]),
-                    listOfSizeIDs()),
+                    listOfSelectedSizeIDs(uniqueSizes![selectedSizeIndex])),
                 listOfSelectedMaterialIDs(
                     uniqueMaterials![selectedMaterialIndex])) !=
             []) {
-          properties.add("Material");
+          properties.add(
+              listOfSelectedMaterialIDs(uniqueMaterials![selectedMaterialIndex])
+                  .first
+                  .toString());
         }
         // els if the intersection of the selected color ID's variation does not contains a size property it checks if it has an intersection with the materials and adds it if found
       } else if (findIntersection(
@@ -277,5 +280,111 @@ class Product extends ChangeNotifier {
       }
     }
     return properties;
+  }
+
+  bool verifyMaterial(int index) {
+    bool output = false;
+//if there is a color
+    if (uniqueColors!.isNotEmpty) {
+      print(111111);
+      //if there is a color and size
+      if (uniqueSizes!.isNotEmpty &&
+          //and there is a variation that contains the selected color and size
+          !intersectColorSize(selectedSizeIndex)) {
+        output = intersectColorSizeMaterial(index);
+      } else {
+        //if there is a color and no size
+        print(10000000000000);
+
+        output = intersectColorMaterial(index);
+      }
+
+      //
+    } else {
+      //if there is no color
+      if (uniqueSizes!.isNotEmpty) {
+        //if there is no color but there is size
+        output = intersectSizeMaterial(index);
+      } else {
+        //if there is no color and no size
+        if (uniqueMaterials!.isNotEmpty) {
+          //if there is only material
+          output = true;
+        } else {
+          //if there is no material
+          output = false;
+        }
+      }
+    }
+    return output;
+  }
+
+  bool intersectColorSizeMaterial(int index) {
+    return uniqueColors!.isNotEmpty
+        ? findIntersection(
+                listOfSelectedSizeIDs(uniqueSizes![selectedSizeIndex]),
+                findIntersection(
+                    listOfSelectedColorIDs(uniqueColors![selectedColorIndex]),
+                    listOfSelectedMaterialIDs(uniqueMaterials![index])))
+            .isEmpty
+        : false;
+  }
+
+  bool intersectColorMaterial(int index) {
+    return findIntersection(
+            listOfSelectedColorIDs(uniqueColors![selectedColorIndex]),
+            listOfSelectedMaterialIDs(uniqueMaterials![index]))
+        .isEmpty;
+  }
+
+  bool intersectSizeMaterial(int index) {
+    return findIntersection(
+            listOfSelectedSizeIDs(uniqueSizes![selectedSizeIndex]),
+            listOfSelectedMaterialIDs(uniqueMaterials![index]))
+        .isEmpty;
+  }
+
+  bool verifySize(int index) {
+    bool output = false;
+//if there is a color
+    if (uniqueColors!.isNotEmpty) {
+      //if there is a color and size
+      if (uniqueSizes!.isNotEmpty) {
+        output = intersectColorSize(index);
+        print(1);
+      } else {
+        print(0);
+
+        output = false;
+      }
+    }
+//if there is no color
+    else {
+      if (uniqueColors!.isNotEmpty) {
+        output = true;
+      }
+    }
+    return output;
+  }
+
+//
+
+  bool intersectColorSize(int index) {
+    return uniqueColors!.isNotEmpty
+        ? findIntersection(
+                listOfSelectedColorIDs(uniqueColors![selectedColorIndex]),
+                listOfSelectedSizeIDs(uniqueSizes![index]))
+            .isEmpty
+        : false;
+  }
+
+  bool verifyColor(int index) {
+    bool output = false;
+    if (uniqueColors!.isNotEmpty) {
+      output = true;
+    } else {
+      output = false;
+    }
+    return output;
   }
 }

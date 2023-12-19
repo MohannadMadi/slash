@@ -20,6 +20,8 @@ class _CustomMaterialSelectorState extends State<CustomMaterialSelector> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+    var product =
+        context.watch<ListOfProducts>().products![widget.productIndex];
     return Column(
       children: [
         const Row(
@@ -44,107 +46,36 @@ class _CustomMaterialSelectorState extends State<CustomMaterialSelector> {
                     .uniqueMaterials!
                     .length,
                 itemBuilder: (context, index) {
-                  return context
-                              .watch<ListOfProducts>()
-                              .products![widget.productIndex]
-                              .findIntersection(
-                                  //selected Size id list
-                                  context
-                                      .watch<ListOfProducts>()
-                                      .products![widget.productIndex]
-                                      .listOfSelectedSizeIDs(context
-                                              .watch<ListOfProducts>()
-                                              .products![widget.productIndex]
-                                              .uniqueSizes![
-                                          context
-                                              .watch<ListOfProducts>()
-                                              .products![widget.productIndex]
-                                              .selectedSizeIndex]),
-                                  //current material id list
-
-                                  context
-                                      .watch<ListOfProducts>()
-                                      .products![widget.productIndex]
-                                      .listOfSelectedMaterialIDs(context
-                                          .watch<ListOfProducts>()
-                                          .products![widget.productIndex]
-                                          .uniqueMaterials![index])) ==
-                          []
-                      ? null
-                      :
-
-                      //condition to find intersection between the three variation id's , if intersection with the material[index]  >0 then we're fine:)
-
-                      context
-                              .watch<ListOfProducts>()
-                              .products![widget.productIndex]
-                              .findIntersection(
-                                  //selected size id list
-                                  context
-                                      .watch<ListOfProducts>()
-                                      .products![widget.productIndex]
-                                      .listOfSelectedSizeIDs(context
-                                              .watch<ListOfProducts>()
-                                              .products![widget.productIndex]
-                                              .uniqueSizes![
-                                          context
-                                              .watch<ListOfProducts>()
-                                              .products![widget.productIndex]
-                                              .selectedSizeIndex]),
-                                  context
-                                      .watch<ListOfProducts>()
-                                      .products![widget.productIndex]
-                                      .findIntersection(
-                                          //selected color id list
-                                          context
-                                              .watch<ListOfProducts>()
-                                              .products![widget.productIndex]
-                                              .listOfSelectedColorIDs(context.watch<ListOfProducts>().products![widget.productIndex].uniqueColors![context.watch<ListOfProducts>().products![widget.productIndex].selectedColorIndex]),
-                                          //current Size id list
-
-                                          context.watch<ListOfProducts>().products![widget.productIndex].listOfSelectedMaterialIDs(context.watch<ListOfProducts>().products![widget.productIndex].uniqueMaterials![index])))
-                              .isEmpty
-                          ? Container()
-                          : InkWell(
-                              onTap: () {
-                                setState(() {
-                                  selectedIndex = index;
-                                  context
-                                      .read<ListOfProducts>()
-                                      .products![widget.productIndex]
-                                      .selectedMaterialIndex = index;
-                                  widget.onchanged();
-                                });
-                              },
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 1),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  constraints: const BoxConstraints(
-                                    minWidth: 60,
-                                  ),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(6),
-                                      color: context
-                                                  .watch<ListOfProducts>()
-                                                  .products![
-                                                      widget.productIndex]
-                                                  .selectedMaterialIndex ==
-                                              index
-                                          ? Colors.green[500]
-                                          : Colors.grey[900]),
-                                  child: Text(
-                                    context
-                                        .watch<ListOfProducts>()
-                                        .products![widget.productIndex]
-                                        .uniqueMaterials![index],
-                                    style: const TextStyle(
-                                        color: Colors.black, fontSize: 20),
-                                  ),
-                                ),
+                  return product.verifyMaterial(index)
+                      ? Container()
+                      : InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectedIndex = index;
+                              product.selectedMaterialIndex = index;
+                              widget.onchanged();
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 1),
+                            child: Container(
+                              alignment: Alignment.center,
+                              constraints: const BoxConstraints(
+                                minWidth: 60,
                               ),
-                            );
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(6),
+                                  color: product.selectedMaterialIndex == index
+                                      ? Colors.green[500]
+                                      : Colors.grey[900]),
+                              child: Text(
+                                product.uniqueMaterials![index],
+                                style: const TextStyle(
+                                    color: Colors.black, fontSize: 20),
+                              ),
+                            ),
+                          ),
+                        );
                 }),
           ),
         ),
