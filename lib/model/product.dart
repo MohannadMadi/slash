@@ -346,7 +346,9 @@ class Product extends ChangeNotifier {
   }
 
   bool intersectColorSizeMaterial(int index) {
-    return uniqueColors!.isNotEmpty
+    return uniqueColors!.isNotEmpty &&
+            uniqueMaterials!.isNotEmpty &&
+            uniqueSizes!.isNotEmpty
         ? findIntersection(
                 listOfSelectedSizeIDs(uniqueSizes![selectedSizeIndex]),
                 findIntersection(
@@ -414,3 +416,97 @@ class Product extends ChangeNotifier {
     return output;
   }
 }
+
+//sample date
+
+Product product1 = Product(
+    id: 1,
+    currentVariationId: 100,
+    name: "scarf",
+    description: "a scarf",
+    brandId: 1,
+    brandName: "Honda Store",
+    brandLogoUrl: "Assets/Images/profilePic.jpeg",
+    rating: 3,
+    variations: [variation1],
+    availableProperties: variation1.productPropertiesValues);
+
+Product product2 = Product(
+    id: 2,
+    currentVariationId: 200,
+    name: "bag",
+    description: "a bag",
+    brandName: "Honda Store",
+    brandLogoUrl: "Assets/Images/profilePic.jpeg",
+    brandId: 1,
+    rating: 4,
+    variations: [variation2, variation1, variation3],
+    availableProperties: []);
+
+ProductVariation variation1 = ProductVariation(
+    id: 100,
+    productId: 1,
+    price: 200,
+    quantity: 20,
+    inStock: true,
+    productVarientImages: [
+      "Assets/Images/hmgoepprod.jpeg"
+    ],
+    productPropertiesValues: [
+      proAndVal2,
+      proAndVal5,
+    ]);
+
+ProductVariation variation2 = ProductVariation(
+    id: 200,
+    productId: 2,
+    price: 20,
+    quantity: 2,
+    inStock: false,
+    productVarientImages: [
+      "Assets/Images/bag.jpg",
+      "Assets/Images/gettyimages-167759603-612x612.jpg"
+    ],
+    productPropertiesValues: [
+      proAndVal1,
+      proAndVal4,
+      proAndVal6
+    ]);
+ProductVariation variation3 = ProductVariation(
+  id: 300,
+  productId: 2,
+  price: 2000,
+  quantity: 2,
+  inStock: true,
+  productVarientImages: [
+    "Assets/Images/bag.jpg",
+    "Assets/Images/gettyimages-167759603-612x612.jpg"
+  ],
+  productPropertiesValues: [proAndVal2, proAndVal4],
+);
+
+ProductPropertyAndValue proAndVal1 =
+    ProductPropertyAndValue(property: "Color", value: "0xffffff00");
+ProductPropertyAndValue proAndVal2 =
+    ProductPropertyAndValue(property: "Color", value: "0xffffffff");
+ProductPropertyAndValue proAndVal3 =
+    ProductPropertyAndValue(property: "Size", value: "M");
+
+ProductPropertyAndValue proAndVal4 =
+    ProductPropertyAndValue(property: "Size", value: "XXL");
+ProductPropertyAndValue proAndVal5 =
+    ProductPropertyAndValue(property: "Size", value: "XL");
+ProductPropertyAndValue proAndVal6 =
+    ProductPropertyAndValue(property: "Material", value: "Cotton");
+ProductPropertyAndValue proAndVal7 =
+    ProductPropertyAndValue(property: "Material", value: "Wool");
+
+List<ProductPropertyAndValue> productPropertiesValues = [
+  proAndVal2,
+  proAndVal3,
+  proAndVal4,
+  proAndVal5,
+  proAndVal6,
+  proAndVal7,
+];
+List<Product> products = [product1, product2];

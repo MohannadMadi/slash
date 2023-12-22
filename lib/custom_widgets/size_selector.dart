@@ -51,14 +51,6 @@ class _CustomSizeSelectorState extends State<CustomSizeSelector> {
                   itemBuilder: (context, index) {
                     return
 // if the intersection of the color id's and the size[index] id's > 0 it should work fine :)
-                        // watchProduct
-                        //         .findIntersection(
-                        //             watchProduct.listOfSelectedColorIDs(
-                        //                 watchProduct.uniqueColors![
-                        //                     watchProduct.selectedColorIndex]),
-                        //             watchProduct.listOfSelectedSizeIDs(
-                        //                 watchProduct.uniqueSizes![index]))
-                        //         .isEmpty
                         watchProduct.verifySize(index)
                             ? Container()
                             : InkWell(
