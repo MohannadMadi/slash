@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:slash/custom_widgets/scroll_animation.dart';
 import 'package:slash/model/product_list.dart';
 
 class CustomMaterialSelector extends StatefulWidget {
@@ -46,11 +47,17 @@ class _CustomMaterialSelectorState extends State<CustomMaterialSelector> {
                       ? Container()
                       : InkWell(
                           onTap: () {
-                            setState(() {
-                              selectedIndex = index;
-                              watchProduct.selectedMaterialIndex = index;
-                              widget.onchanged();
-                            });
+                            watchProduct.selectedMaterialIndex == index
+                                ? () {}
+                                : setState(() {
+                                    context
+                                        .read<CustomScrollAnimation>()
+                                        .setAngleToZero();
+
+                                    selectedIndex = index;
+                                    watchProduct.selectedMaterialIndex = index;
+                                    widget.onchanged();
+                                  });
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 1),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:slash/custom_widgets/scroll_animation.dart';
 import 'package:slash/model/product_list.dart';
 
 class CustomColorSelector extends StatefulWidget {
@@ -44,6 +45,9 @@ class _CustomColorSelectorState extends State<CustomColorSelector> {
                       watchProduct.selectedColorIndex == index
                           ? () {}
                           : setState(() {
+                              context
+                                  .read<CustomScrollAnimation>()
+                                  .setAngleToZero();
                               readProduct.selectedColorIndex = index;
                               // this changes the index of the selcted size to the first size that exists for the selected color by getting the index of the first element that has an ID which intersects with an ID of the selected color
 

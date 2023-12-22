@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:slash/custom_widgets/scroll_animation.dart';
 import 'package:slash/model/cart_item.dart';
 import 'package:slash/model/product.dart';
 import 'package:slash/model/product_list.dart';
@@ -16,6 +17,9 @@ void main() {
       ),
       ChangeNotifierProvider(
         create: (context) => CartItem(),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => CustomScrollAnimation(),
       )
     ],
     child: const MyApp(),

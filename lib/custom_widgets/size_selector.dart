@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:slash/custom_widgets/scroll_animation.dart';
 import 'package:slash/model/product_list.dart';
 
 class CustomSizeSelector extends StatefulWidget {
@@ -55,34 +56,41 @@ class _CustomSizeSelectorState extends State<CustomSizeSelector> {
                             ? Container()
                             : InkWell(
                                 onTap: () {
-                                  setState(() {
-                                    readProduct.selectedSizeIndex = index;
+                                  watchProduct.selectedSizeIndex == index
+                                      ? () {}
+                                      : setState(() {
+                                          context
+                                              .read<CustomScrollAnimation>()
+                                              .setAngleToZero();
 
-                                    // this changes the index of the selcted material to the first material that exists for the selected size by getting the index of the first element that has an ID which intersects with an ID of the selected size
-                                    if (readProduct
-                                        .findIntersection(
-                                            readProduct.listOfSelectedSizeIDs(
-                                                readProduct.uniqueSizes![
-                                                    readProduct
-                                                        .selectedSizeIndex]),
-                                            readProduct.listOfMaterialIDs())
-                                        .isNotEmpty) {
-                                      readProduct.selectedMaterialIndex = readProduct
-                                          .uniqueMaterials!
-                                          .indexOf(readProduct
-                                                  .variationIdOfUniqueMaterial![
-                                              readProduct
-                                                  .findIntersection(
-                                                      readProduct.listOfSelectedSizeIDs(
+                                          readProduct.selectedSizeIndex = index;
+
+                                          // this changes the index of the selcted material to the first material that exists for the selected size by getting the index of the first element that has an ID which intersects with an ID of the selected size
+                                          if (readProduct
+                                              .findIntersection(
+                                                  readProduct.listOfSelectedSizeIDs(
+                                                      readProduct.uniqueSizes![
                                                           readProduct
-                                                                  .uniqueSizes![
-                                                              readProduct
-                                                                  .selectedSizeIndex]),
-                                                      readProduct
-                                                          .listOfMaterialIDs())
-                                                  .first]!);
-                                    }
-                                  });
+                                                              .selectedSizeIndex]),
+                                                  readProduct
+                                                      .listOfMaterialIDs())
+                                              .isNotEmpty) {
+                                            readProduct.selectedMaterialIndex = readProduct
+                                                .uniqueMaterials!
+                                                .indexOf(readProduct
+                                                        .variationIdOfUniqueMaterial![
+                                                    readProduct
+                                                        .findIntersection(
+                                                            readProduct.listOfSelectedSizeIDs(
+                                                                readProduct
+                                                                        .uniqueSizes![
+                                                                    readProduct
+                                                                        .selectedSizeIndex]),
+                                                            readProduct
+                                                                .listOfMaterialIDs())
+                                                        .first]!);
+                                          }
+                                        });
                                   widget.onchanged();
                                 },
                                 child: Padding(

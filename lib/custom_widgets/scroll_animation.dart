@@ -1,28 +1,44 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'package:slash/custom_widgets/product_wrapper.dart';
 import 'package:slash/model/product_list.dart';
 
-class CustomScrollAnimation extends StatefulWidget {
-  final int productIndex;
-  const CustomScrollAnimation({super.key, required this.productIndex});
+class CustomScrollAnimation extends StatefulWidget with ChangeNotifier {
+  final int? productIndex;
+  CustomScrollAnimation({
+    super.key,
+    this.productIndex,
+  });
 
   @override
   State<CustomScrollAnimation> createState() => _CustomScrollAnimationState();
+
+  void setAngleToZero() {
+    angle = 0;
+    notifyListeners();
+  }
 }
 
+double angle = 0;
+
 class _CustomScrollAnimationState extends State<CustomScrollAnimation> {
-  double angle = 0;
   int selectedIndex = 0;
   CarouselController buttonCarouselController = CarouselController();
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     var watchProduct =
-        context.watch<ListOfProducts>().products![widget.productIndex];
+        context.watch<ListOfProducts>().products![widget.productIndex!];
+    var readProduct =
+        context.read<ListOfProducts>().products![widget.productIndex!];
+    // int currentProductIdChecker = -1;
+    // currentProductIdChecker != watchProduct.getCurrentVariation().id!
+    //     ? angle = 0
+    //     : null;
     return Column(
       children: [
         CarouselSlider.builder(
@@ -30,11 +46,13 @@ class _CustomScrollAnimationState extends State<CustomScrollAnimation> {
               onScrolled: (value) {
                 setState(() {
                   angle = value!;
+                  print(angle);
                 });
               },
               onPageChanged: (index, reason) {
                 setState(() {
                   selectedIndex = index;
+                  print("---------------------${index}");
                 });
               },
               height: screenHeight / 2,
