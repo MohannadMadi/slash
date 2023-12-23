@@ -1,6 +1,9 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:slash/custom_widgets/scroll_animation.dart';
+import 'package:slash/custom_widgets/select_color.dart';
+import 'package:slash/model/carousel_procider.dart';
 import 'package:slash/model/cart_item.dart';
 import 'package:slash/model/product.dart';
 import 'package:slash/model/product_list.dart';
@@ -19,7 +22,7 @@ void main() {
         create: (context) => CartItem(),
       ),
       ChangeNotifierProvider(
-        create: (context) => CustomScrollAnimation(),
+        create: (context) => CarouselProvider(),
       )
     ],
     child: const MyApp(),
@@ -41,6 +44,8 @@ class _MyAppState extends State<MyApp> {
 
     context.read<ListOfProducts>().addProduct(product1);
     context.read<ListOfProducts>().addProduct(product2);
+    context.read<CarouselProvider>().buttonCarouselController =
+        CarouselController();
 
     super.initState();
   }

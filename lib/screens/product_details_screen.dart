@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:slash/custom_widgets/add_to_cart.dart';
@@ -37,7 +38,9 @@ class _ProductDetailsScreenState extends State<ProductScreen> {
           mainAxisSize: MainAxisSize.max,
           children: [
             const Row(),
-            CustomScrollAnimation(productIndex: widget.productIndex),
+            CustomScrollAnimation(
+              productIndex: widget.productIndex,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

@@ -3,50 +3,48 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:slash/custom_widgets/material_selector.dart';
 import 'package:slash/custom_widgets/product_wrapper.dart';
+import 'package:slash/custom_widgets/select_color.dart';
+import 'package:slash/model/carousel_procider.dart';
 import 'package:slash/model/product_list.dart';
 
 class CustomScrollAnimation extends StatefulWidget with ChangeNotifier {
   final int? productIndex;
+
+  // ignore: use_super_parameters
   CustomScrollAnimation({
-    super.key,
+    Key? key,
     this.productIndex,
-  });
+  }) : super(key: key);
 
   @override
   State<CustomScrollAnimation> createState() => _CustomScrollAnimationState();
-
-  void setAngleToZero() {
-    angle = 0;
-    notifyListeners();
-  }
 }
-
-double angle = 0;
 
 class _CustomScrollAnimationState extends State<CustomScrollAnimation> {
   int selectedIndex = 0;
-  CarouselController buttonCarouselController = CarouselController();
+
   @override
   Widget build(BuildContext context) {
+    double watchAngle = context.watch<CarouselProvider>().angle;
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     var watchProduct =
         context.watch<ListOfProducts>().products![widget.productIndex!];
     var readProduct =
         context.read<ListOfProducts>().products![widget.productIndex!];
-    // int currentProductIdChecker = -1;
-    // currentProductIdChecker != watchProduct.getCurrentVariation().id!
-    //     ? angle = 0
-    //     : null;
+    var buttonReader =
+        context.read<CarouselProvider>().buttonCarouselController;
+
     return Column(
       children: [
         CarouselSlider.builder(
           options: CarouselOptions(
               onScrolled: (value) {
                 setState(() {
-                  angle = value!;
-                  print(angle);
+                  context.read<CarouselProvider>().angle = value!;
+                  print(watchAngle);
                 });
               },
               onPageChanged: (index, reason) {
@@ -59,7 +57,7 @@ class _CustomScrollAnimationState extends State<CustomScrollAnimation> {
               viewportFraction: .75,
               aspectRatio: 1 / 1,
               enableInfiniteScroll: false),
-          carouselController: buttonCarouselController,
+          carouselController: buttonReader,
           itemCount:
               watchProduct.getCurrentVariation().productVarientImages!.length,
           itemBuilder: (context, index, realIndex) => Column(
@@ -69,7 +67,7 @@ class _CustomScrollAnimationState extends State<CustomScrollAnimation> {
               ),
               AnimatedRotation(
                 //equation for image rotaion
-                turns: index * .06 - angle * .06,
+                turns: index * .06 - watchAngle * .06,
                 duration: Duration.zero,
                 child: CustomProductWrapper(
                     imageUrl: watchProduct
@@ -102,7 +100,7 @@ class _CustomScrollAnimationState extends State<CustomScrollAnimation> {
                         setState(() {
                           debugPrint(selectedIndex.toString());
                         });
-                        buttonCarouselController.animateToPage(index,
+                        buttonReader!.animateToPage(index,
                             duration: const Duration(milliseconds: 300));
                       },
                       child: Container(

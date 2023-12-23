@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:slash/custom_widgets/scroll_animation.dart';
+import 'package:slash/custom_widgets/select_color.dart';
+import 'package:slash/model/carousel_procider.dart';
 import 'package:slash/model/product_list.dart';
 
 class CustomSizeSelector extends StatefulWidget {
@@ -60,7 +62,7 @@ class _CustomSizeSelectorState extends State<CustomSizeSelector> {
                                       ? () {}
                                       : setState(() {
                                           context
-                                              .read<CustomScrollAnimation>()
+                                              .read<CarouselProvider>()
                                               .setAngleToZero();
 
                                           readProduct.selectedSizeIndex = index;

@@ -1,20 +1,32 @@
+// ignore_for_file: public_member_api_docs,
+
+import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'package:slash/custom_widgets/scroll_animation.dart';
+import 'package:slash/model/carousel_procider.dart';
+import 'package:slash/model/product.dart';
 import 'package:slash/model/product_list.dart';
 
 class CustomColorSelector extends StatefulWidget {
-  final int productIndex;
-  final Function onchanged;
-  const CustomColorSelector(
-      {super.key, required this.productIndex, required this.onchanged});
+  int? productIndex;
+  Function? onchanged;
+  CustomColorSelector({
+    Key? key,
+    this.productIndex,
+    this.onchanged,
+  }) : super(key: key);
 
   @override
   State<CustomColorSelector> createState() => _CustomColorSelectorState();
+
+  double angle = 0;
 }
 
 int groupValue = 0;
 bool ispressed = false;
+
 //list to show colors only once
 
 Color getColorFromHex(String hexColor) {
@@ -27,9 +39,9 @@ class _CustomColorSelectorState extends State<CustomColorSelector> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     var watchProduct =
-        context.watch<ListOfProducts>().products![widget.productIndex];
+        context.watch<ListOfProducts>().products![widget.productIndex!];
     var readProduct =
-        context.read<ListOfProducts>().products![widget.productIndex];
+        context.read<ListOfProducts>().products![widget.productIndex!];
     return SizedBox(
         width: screenWidth,
         height: 30,
@@ -45,9 +57,7 @@ class _CustomColorSelectorState extends State<CustomColorSelector> {
                       watchProduct.selectedColorIndex == index
                           ? () {}
                           : setState(() {
-                              context
-                                  .read<CustomScrollAnimation>()
-                                  .setAngleToZero();
+                              context.read<CarouselProvider>().setAngleToZero();
                               readProduct.selectedColorIndex = index;
                               // this changes the index of the selcted size to the first size that exists for the selected color by getting the index of the first element that has an ID which intersects with an ID of the selected color
 
@@ -104,7 +114,7 @@ class _CustomColorSelectorState extends State<CustomColorSelector> {
                             });
 
                       // print(watchProduct.verifyMaterial(1));
-                      widget.onchanged();
+                      widget.onchanged!();
                     },
                     child: Container(
                       width: 30,
